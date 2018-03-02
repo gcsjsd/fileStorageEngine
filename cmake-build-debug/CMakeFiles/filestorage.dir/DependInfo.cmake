@@ -4,10 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/gechang/CLionProjects/filestorage/file.cpp" "/Users/gechang/CLionProjects/filestorage/cmake-build-debug/CMakeFiles/filestorage.dir/file.cpp.o"
-  "/Users/gechang/CLionProjects/filestorage/main.cpp" "/Users/gechang/CLionProjects/filestorage/cmake-build-debug/CMakeFiles/filestorage.dir/main.cpp.o"
+  "/home/zhaowei/ucsd/ece180/fileStorageEngine/file.cpp" "/home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug/CMakeFiles/filestorage.dir/file.cpp.o"
+  "/home/zhaowei/ucsd/ece180/fileStorageEngine/main.cpp" "/home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug/CMakeFiles/filestorage.dir/main.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "AppleClang")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH

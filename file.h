@@ -9,7 +9,7 @@
 #include <fstream>
 #include <string>
 #include <ctime>
-
+#include <iostream>
 class file {
 private:
     float version_number;
@@ -25,7 +25,7 @@ public:
     void version(); //./sf -v
     void error();
     void info();
-
+    void initHeader(std::ofstream &file);
 
 };
 
