@@ -5,13 +5,11 @@
 #include "file.h"
 
 file::file() {
+    version_number = 0.0;
+    build_time = "";
     std::ofstream myfile;
     myfile.open("archive.bin",std::ios::out|std::ios::app);
     myfile.close();
-}
-
-file::file(const file &other) {
-
 }
 
 file::~file() {
@@ -43,5 +41,9 @@ void file::version() {
 }
 
 void file::error() {
+
+}
+
+void file::info() {
 
 }
