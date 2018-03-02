@@ -13,10 +13,22 @@ file::file() {
 }
 
 file::~file() {
-
 }
 
 file &file::add(std::string type, std::string name) {
+    std::ifstream infile(name, std::ifstream::binary);
+    std::filebuf* pbuf = infile.rdbuf();
+    std::size_t size = pbuf->pubseekoff(0,infile.end,infile.in);
+    pbuf->pubseekpos(0,infile.in);
+
+    std::ofstream myfile("archive.bin",std::ios::out|std::ios::app);
+    char* buffer=new char[size];
+    pbuf->sgetn(buffer, size);
+    std::cout.write(buffer,size);
+    myfile<<buffer;
+    delete[] buffer;
+    infile.close();
+    myfile.close();
     return *this;
 }
 
