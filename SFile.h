@@ -1,33 +1,19 @@
-//
-// Created by Ge Chang on 2018/3/1.
-//
-
-#ifndef SFILE_H
-#define SFILE_H
-
-#include <iostream>
-#include <fstream>
+#ifndef SFile_h
+#define SFile_h
 #include <string>
-#include <ctime>
-#include <iostream>
-class SFile {
+#include <fstream>
+class SFile { // encode and decode single file in header
 private:
-    float version_number;
-    std::string build_time;
-public:
-    SFile();
-    ~SFile()();
-    SFile& add(std::string type, std::string name); // ./sf add type file
-    SFile& del(std::string type, std::string name); // ./sf del type file
-    void l(std::string content); // ./sf l content
-    void l(); // ./sf l
-    void search(std::string content); // ./sf search content
-    void version(); //./sf -v
-    void error();
-    void info();
-    void initHeader(std::ofstream &file);
 
+
+public:
+	SFile();
+	SFile(std::string);
+	~SFile();
+	char* readContent(std::ifstream& file);
+	void writeContent(std::ofstream& file);
+	std::string encode();
+	static std::string decode(const char* header);
 };
 
-
-#endif //FILESTORAGE_FILE_H
+#endif
