@@ -1,8 +1,7 @@
 #ifndef SFile_cpp
 #define SFile_cpp
-
 #include "SFile.h"
-
+#include "SFHeader.h"
 SFile::SFile() {
 
 }
@@ -11,15 +10,25 @@ SFile::SFile(std::string) {
 
 }
 
+SFile::SFile(std::string atype, std::string aname, int asize) {
+  this->type = atype;
+  this->name = aname;
+  this->size = asize;
+  this->numChunks = asize / 1024;
+  if (asize % 1024 != 0) {
+    numChunks += 1;
+  }
+}
+
 SFile::~SFile() {
 
 }
 
-char* SFile::readContent(std::ifstream &file) {
+char* SFile::readChunk(std::ifstream &file, int chunk) {
 
 }
 
-void SFile::writeContent(std::ofstream &file) {
+void SFile::writeChunk(std::ofstream &filem, int chunk) {
 
 }
 std::string SFile::encode() {

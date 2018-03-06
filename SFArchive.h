@@ -9,10 +9,13 @@
 #include <fstream>
 #include <string>
 #include <ctime>
+#include "SFHeader.h"
+
 class SFArchive {
 private:
     float version_number;
     std::string build_time;
+    std::fstream archive;
 public:
     SFArchive();
     ~SFArchive();
