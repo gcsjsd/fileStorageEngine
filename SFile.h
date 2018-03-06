@@ -2,23 +2,23 @@
 // Created by Ge Chang on 2018/3/1.
 //
 
-#ifndef FILESTORAGE_FILE_H
-#define FILESTORAGE_FILE_H
+#ifndef SFILE_H
+#define SFILE_H
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <ctime>
 #include <iostream>
-class file {
+class SFile {
 private:
     float version_number;
     std::string build_time;
 public:
-    file();
-    ~file();
-    file& add(std::string type, std::string name); // ./sf add type file
-    file& del(std::string type, std::string name); // ./sf del type file
+    SFile();
+    ~SFile()();
+    SFile& add(std::string type, std::string name); // ./sf add type file
+    SFile& del(std::string type, std::string name); // ./sf del type file
     void l(std::string content); // ./sf l content
     void l(); // ./sf l
     void search(std::string content); // ./sf search content

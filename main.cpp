@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 
-#include "file.h"
+#include "SFile.h"
 
 int main(int argc, char *argv[]) {
-    file instance;
+    SFile instance;
     std::string command(argv[1]);
     if(argc<=2){
         instance.info();

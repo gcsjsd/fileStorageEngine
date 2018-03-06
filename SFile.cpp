@@ -2,10 +2,10 @@
 // Created by Ge Chang on 2018/3/1.
 //
 
-#include "file.h"
+#include "SFFile.h"
 //#include <iostream>
 //#include <fstream>
-file::file() {
+SFile::SFile() {
 
     version_number = 0.0;
     build_time = "";
@@ -29,7 +29,7 @@ file::file() {
     myfile.close();
 
 }
-void file::initHeader(std::ofstream &file) {
+void SFile::initHeader(std::ofstream &file) {
     char* s = new char[1024];
     for (int i = 0; i < 1024; i++) {
         s[i] = ' ';
@@ -37,38 +37,38 @@ void file::initHeader(std::ofstream &file) {
     file.write(s, 1024);
     delete[] s;
 }
-file::~file() {
+SFile::~SFile() {
 
 }
 
-file &file::add(std::string type, std::string name) {
+SFile& SFile::add(std::string type, std::string name) {
     return *this;
 }
 
-file &file::del(std::string type, std::string name) {
+SFile& SFile::del(std::string type, std::string name) {
     return *this;
 }
 
-void file::l(std::string content) {
+void SFile::l(std::string content) {
 
 }
 
-void file::l(){
+void SFile::l(){
 
 }
 
-void file::search(std::string content) {
+void SFile::search(std::string content) {
 
 }
 
-void file::version() {
+void SFile::version() {
 
 }
 
-void file::error() {
+void SFile::error() {
 
 }
 
-void file::info() {
+void SFile::info() {
 
 }
