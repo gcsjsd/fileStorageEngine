@@ -6,7 +6,7 @@
 int main(int argc, char *argv[]) {
     file instance;
     std::string command(argv[1]);
-    if(argc<=2){
+    if(argc==1){
         instance.info();
     }else if(command=="add"){
         std::string type(argv[2]);

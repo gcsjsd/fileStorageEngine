@@ -5,8 +5,9 @@
 #include "file.h"
 
 file::file() {
-    version_number = 0.0;
-    build_time = "";
+    version_number = 0.1;
+    build_time = __DATE__;
+    //chunk_size = 1024*50;
     std::ofstream myfile;
     myfile.open("archive.bin",std::ios::out|std::ios::app);
     myfile.close();
@@ -29,6 +30,7 @@ file &file::add(std::string type, std::string name) {
     delete[] buffer;
     infile.close();
     myfile.close();
+    //std::cout<<"finish"<<std::endl;
     return *this;
 }
 
@@ -49,6 +51,8 @@ void file::search(std::string content) {
 }
 
 void file::version() {
+    std::cout<<"sfarchiver version: "<<version_number<<" "<<build_time<<std::endl;
+    return;
 
 }
 

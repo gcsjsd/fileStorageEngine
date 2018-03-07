@@ -8,12 +8,17 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <ctime>
+#include <time.h>
+#include <cassert>
 
+// data structure of the meta data:
+//first part:  imap: filetype, file name, file size, first chunk, chunk number.
 class file {
 private:
     float version_number;
     std::string build_time;
+    //int chunk_size;
+
 public:
     file();
     ~file();
