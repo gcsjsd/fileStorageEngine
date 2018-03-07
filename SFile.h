@@ -2,12 +2,15 @@
 #define SFile_h
 #include <string>
 #include <fstream>
+#include <ctime>
+
 class SFHeader;
 
 class SFile { // encode and decode single file in header.
 private:
 	std::string type;
 	std::string name;
+	std::string date;
 	int size;
 	int numChunks;
 	vector<int> chunks;
