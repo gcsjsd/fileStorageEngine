@@ -29,7 +29,7 @@ std::vector<int> SFHeader::addFileHeader(block_i &block, std::ofstream archive) 
     if (size % chunk_size != 0) {
         chunkNum++;
     }
-    std::vector<int> assignedChunks = assignedChunks(chunkNum);
+    std::vector<int> assignedChunks = this->assignChunks(chunkNum);
     for (int i = 0; i < chunkNum; i++) {
         block.chunks.push_back(assignedChunks[i]);
     }
