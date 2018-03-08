@@ -39,9 +39,9 @@ SFArchive::SFArchive() {
 
 void SFArchive::initHeader(std::ofstream &file) {
     //char* s = new char[chunk_size]; //set the space of the header
-    block_i blocks[50]; // current we can write 50 files at most
+    block_i blocks[maxFileNumber]; // current we can write 50 files at most
 
-    for(std::size_t i=0;i<50;i++){
+    for(std::size_t i=0;i<maxFileNumber;i++){
         //to do:: fill the empty header
         blocks[i].type = AVA;
         for(int j=0; j<name_size; j++){
@@ -60,23 +60,41 @@ SFArchive::~SFArchive() {
 }
 
 SFArchive& SFArchive::add(std::string type, std::string name) {
+    //two types of work: 1. change the meta data information 2. find the chunk and store the file
     std::ifstream file(name, std::ios::in|std::ios|binary|std::ios::ate);
+
+    //calculate the chunk number we need
     if (file.is_open()) {
         int size = file.tellg();
         file.seekg(0, std::ios::beg);
-        int chunkSize = 1024;
-        int chunkNum = size / 1024;
-        if (size % 1024 != 0) {
+        int chunkNum = size / chunk_size;
+        if (size % chunk_size != 0) {
             chunkNum += 1;
         }
-        char* headerChar = new char[1024];
-        this->archive.read(headerChar, 1024);
-        SFHeader header(headerChar);
-        vector<int> assignedChunks = header.assignChunks(chunkNum);
-        SFile sfile(type, name, size);
-        char* content = new char[size];
-        sfile.writeArchive(this->archive, assignedChunks, content);
-        this->archive.close();
+
+        //get the header
+        block_i* blocks = this->readerHeader();
+        std::size_t index = 0;
+        while(index<maxFileNumber){
+            if(blocks[index].type!=AVA){
+                index++;
+            } //find the index that
+            else{
+                int lastElement = blocks[index-1].chunks.back();
+                // assign the blocks to the new header and write
+                //assign all the metadata features
+                vector<int> assignedChunks = header.assignChunks(chunkNum);
+                SFile sfile(type, name, size);
+                char* content = new char[size];
+                sfile.writeArchive(this->archive, assignedChunks, content);
+                this->archive.close();
+            }
+        }
+
+        if(index==maxFileNumber){
+            std::cout<<"ERROR: The file system is at full capacity"<<std::endl;
+        }
+
 
 
     } else {
@@ -86,6 +104,11 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
 }
 
 SFArchive& SFArchive::del(std::string type, std::string name) {
+    int deleteChunkNumber = 0;
+    int totalChunkNumber = chunkNum;
+    if(blocks[index].type==DEL){
+        deleteChunkNumber += blocks[index].chunks.size();
+    }
     return *this;
 }
 
