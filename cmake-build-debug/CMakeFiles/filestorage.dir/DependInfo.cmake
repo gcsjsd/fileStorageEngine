@@ -1,17 +1,7 @@
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "CXX"
   )
 # The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/zhaowei/ucsd/ece180/fileStorageEngine/file.cpp" "/home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug/CMakeFiles/filestorage.dir/file.cpp.o"
-  "/home/zhaowei/ucsd/ece180/fileStorageEngine/main.cpp" "/home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug/CMakeFiles/filestorage.dir/main.cpp.o"
-  )
-set(CMAKE_CXX_COMPILER_ID "GNU")
-
-# The include file search paths:
-set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES

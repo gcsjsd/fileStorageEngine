@@ -1,34 +1,15 @@
 #include "SFHeader.h"
 
 
-SFHeader::SFHeader() {
+vector<int> SFHeader:: getEmptyChunks(){
+    std:: size_t found = SFHeader.find('}');
+    std:: string info = header.substr(1, found-1);
+    std:: stringstream ss(info);
+    std:: vector<int> chunks;
 
-}
+    for(int i=0; ss>>i; ){
+        chunks.push_back(i);
+    }
 
-SFHeader::SFHeader(char *headerChar) {
-
-}
-
-SFHeader::~SFHeader() {
-
-}
-
-vector<int> SFHeader::assignChunks(int chunkNum) {
-
-}
-
-void SFHeader::readHeader(std::ofstream file) {
-
-}
-
-void SFHeader::writeHeader(std::ifsream file) {
-
-}
-
-std::string SFHeader::encode() {
-
-}
-
-void SFHeader::decode() {
-
+    return chunks;
 }

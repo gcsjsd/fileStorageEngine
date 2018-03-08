@@ -39,19 +39,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/zhaowei/Downloads/CLion-2017.3.1/clion-2017.3.1/bin/cmake/bin/cmake
+CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/bin/cmake
 
 # The command to remove a file.
-RM = /home/zhaowei/Downloads/CLion-2017.3.1/clion-2017.3.1/bin/cmake/bin/cmake -E remove -f
+RM = /Applications/CLion.app/Contents/bin/cmake/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/zhaowei/ucsd/ece180/fileStorageEngine
+CMAKE_SOURCE_DIR = /Users/gechang/CLionProjects/filestorage/fileStorageEngine
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/gechang/CLionProjects/filestorage/fileStorageEngine/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/home/zhaowei/Downloads/CLion-2017.3.1/clion-2017.3.1/bin/cmake/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/Applications/CLion.app/Contents/bin/cmake/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/home/zhaowei/Downloads/CLion-2017.3.1/clion-2017.3.1/bin/cmake/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/Applications/CLion.app/Contents/bin/cmake/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug/CMakeFiles /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/gechang/CLionProjects/filestorage/fileStorageEngine/cmake-build-debug/CMakeFiles /Users/gechang/CLionProjects/filestorage/fileStorageEngine/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/gechang/CLionProjects/filestorage/fileStorageEngine/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,60 +123,6 @@ filestorage/fast:
 	$(MAKE) -f CMakeFiles/filestorage.dir/build.make CMakeFiles/filestorage.dir/build
 .PHONY : filestorage/fast
 
-file.o: file.cpp.o
-
-.PHONY : file.o
-
-# target to build an object file
-file.cpp.o:
-	$(MAKE) -f CMakeFiles/filestorage.dir/build.make CMakeFiles/filestorage.dir/file.cpp.o
-.PHONY : file.cpp.o
-
-file.i: file.cpp.i
-
-.PHONY : file.i
-
-# target to preprocess a source file
-file.cpp.i:
-	$(MAKE) -f CMakeFiles/filestorage.dir/build.make CMakeFiles/filestorage.dir/file.cpp.i
-.PHONY : file.cpp.i
-
-file.s: file.cpp.s
-
-.PHONY : file.s
-
-# target to generate assembly for a file
-file.cpp.s:
-	$(MAKE) -f CMakeFiles/filestorage.dir/build.make CMakeFiles/filestorage.dir/file.cpp.s
-.PHONY : file.cpp.s
-
-main.o: main.cpp.o
-
-.PHONY : main.o
-
-# target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/filestorage.dir/build.make CMakeFiles/filestorage.dir/main.cpp.o
-.PHONY : main.cpp.o
-
-main.i: main.cpp.i
-
-.PHONY : main.i
-
-# target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/filestorage.dir/build.make CMakeFiles/filestorage.dir/main.cpp.i
-.PHONY : main.cpp.i
-
-main.s: main.cpp.s
-
-.PHONY : main.s
-
-# target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/filestorage.dir/build.make CMakeFiles/filestorage.dir/main.cpp.s
-.PHONY : main.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +132,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... filestorage"
-	@echo "... file.o"
-	@echo "... file.i"
-	@echo "... file.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
 .PHONY : help
 
 
