@@ -19,8 +19,9 @@
 #define DEL 4
 
 #define chunk_size 1024
-#define block_size 0
-#define name_size 20
+#define block_size 0 // the block in the header
+#define name_size 20 //file name size
+#define maxFileNumber 50 // how many blocks in a header
 
 class SFArchive {
 private:
@@ -56,6 +57,8 @@ public:
     void info(); // :: show the information
 
     void initHeader(std::ofstream &file); // fulfill the header.
+    block_i* readerHeader(); // read all the header into the struct
+    void updateHeader(block_i* blocks); // update the header,
 
 };
 
