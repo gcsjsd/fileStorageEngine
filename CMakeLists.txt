@@ -3,4 +3,4 @@ project(filestorage)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(filestorage main.cpp file.cpp file.h)
+add_executable(filestorage main.cpp file.cpp file.h Block.h)

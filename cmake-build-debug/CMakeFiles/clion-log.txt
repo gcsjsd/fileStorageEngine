@@ -1,14 +1,14 @@
-/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/gechang/CLionProjects/filestorage/fileStorageEngine
--- The C compiler identification is AppleClang 9.0.0.9000038
--- The CXX compiler identification is AppleClang 9.0.0.9000038
--- Check for working C compiler: /Library/Developer/CommandLineTools/usr/bin/cc
--- Check for working C compiler: /Library/Developer/CommandLineTools/usr/bin/cc -- works
+/home/zhaowei/Downloads/CLion-2017.3.1/clion-2017.3.1/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/zhaowei/ucsd/ece180/fileStorageEngine
+-- The C compiler identification is GNU 7.2.0
+-- The CXX compiler identification is GNU 7.2.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
 -- Detecting C compile features
 -- Detecting C compile features - done
--- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++
--- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ -- works
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
 -- Detecting CXX compiler ABI info
 -- Detecting CXX compiler ABI info - done
 -- Detecting CXX compile features
@@ -26,5 +26,4 @@ CMake Error at CMakeLists.txt:6 (add_executable):
 CMake Error: CMake can not determine linker language for target: filestorage
 CMake Error: Cannot determine link language for target "filestorage".
 -- Generating done
--- Build files have been written to: /Users/gechang/CLionProjects/filestorage/fileStorageEngine/cmake-build-debug
-Unable to determine product file path for target filestorage. Running and debugging will be unavailable.
+-- Build files have been written to: /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug

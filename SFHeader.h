@@ -4,25 +4,24 @@
 #include <vector>
 #include "SFile.h"
 #include <fstream>
-class SFHeader { // TODO: SFHeader's structure is not clear. Some functions are not needed. SFHeader's function is also not clear enough.
-//private:
-	//std::vector<SFile> files;
-	//std::vector<int> emptyChunks;
+#include "Block.h"
+class SFHeader {
+private:
+	block_i blocks[maxFileNumber];
 public:
-	std::string SFHeader;
-
 	SFHeader();
-	SFHeader(char* headerChar);
 	~SFHeader();
+	std::vector<int> assignChunks(int chunkNum);
+	std::vector<int> addFileHeader(block_i& block, std::ofstream archive);
+	void delFileHeader(int atype, std::string aname, std::ofstream archive);
+	std::vector<int> getFile(int atype, std::string aname); // return the chunk number for this file.
+	int getFileSize(int atype, std::string aname);
+	void writeHeader(std::ofsream& archive);
+	void readHeader(std::ifstream& archive);
+	void updateWholeHeader();
+	void listFiles(std::string s);
+	void listFiles();
 
-	vector<int> assignChunks(int chunkNum);
-	vector<int> getEmptyChunks();
-	//void updateHeader();
-	void writeHeader(std::ofsream file);
-	void readHeader(std::ifstream file);
-	//std::string encode();
-	//void decode();
-	std::vector<SFile> getFiles();
 };
 
 #endif

@@ -34,19 +34,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/bin/cmake
+CMAKE_COMMAND = /home/zhaowei/Downloads/CLion-2017.3.1/clion-2017.3.1/bin/cmake/bin/cmake
 
 # The command to remove a file.
-RM = /Applications/CLion.app/Contents/bin/cmake/bin/cmake -E remove -f
+RM = /home/zhaowei/Downloads/CLion-2017.3.1/clion-2017.3.1/bin/cmake/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/gechang/CLionProjects/filestorage/fileStorageEngine
+CMAKE_SOURCE_DIR = /home/zhaowei/ucsd/ece180/fileStorageEngine
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/gechang/CLionProjects/filestorage/fileStorageEngine/cmake-build-debug
+CMAKE_BINARY_DIR = /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/filestorage.dir/depend.make
@@ -66,6 +66,6 @@ CMakeFiles/filestorage.dir/clean:
 .PHONY : CMakeFiles/filestorage.dir/clean
 
 CMakeFiles/filestorage.dir/depend:
-	cd /Users/gechang/CLionProjects/filestorage/fileStorageEngine/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/gechang/CLionProjects/filestorage/fileStorageEngine /Users/gechang/CLionProjects/filestorage/fileStorageEngine /Users/gechang/CLionProjects/filestorage/fileStorageEngine/cmake-build-debug /Users/gechang/CLionProjects/filestorage/fileStorageEngine/cmake-build-debug /Users/gechang/CLionProjects/filestorage/fileStorageEngine/cmake-build-debug/CMakeFiles/filestorage.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/zhaowei/ucsd/ece180/fileStorageEngine /home/zhaowei/ucsd/ece180/fileStorageEngine /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug /home/zhaowei/ucsd/ece180/fileStorageEngine/cmake-build-debug/CMakeFiles/filestorage.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/filestorage.dir/depend
 

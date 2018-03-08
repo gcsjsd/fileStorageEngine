@@ -3,28 +3,17 @@
 #include <string>
 #include <fstream>
 #include <ctime>
-
+#include <vector>
+#include "Block.h"
 class SFHeader;
 
 class SFile { // encode and decode single file in header.
-private:
-	std::string type;
-	std::string name;
-	std::string date;
-	int size;
-	int numChunks;
-	vector<int> chunks;
 public:
 	SFile();
-	SFile(std::string);
-	SFile(std::string atype, std::string aname, int asize);
 	~SFile();
-	char* readChunk(std::ifstream& file, int chunk);
-	void writeChunk(std::ofstream& archive, int chunk, char* buffer);
-	void writeArchive(std::ofstream archive, vector<int> chunks, char* buffer);
-	void readArchive(std::ifstream archive, vector<int> chunks, char* buffer);
-	std::string encode();
-	static std::string decode(const char* header);
+	static void writeArchive(std::ofstream& archive, std::vector<int> chunks, std::ifstream& file);
+	static void readArchive(std::ifstream& archive, std::vector<int> chunks, std::ofstream& file, int size);
+	static void writeWholeArchive(std::fstream& oldArchive, std::ofstream& newArchivestd::vector<block_i> oldBlocks, std::vector<block_i> newBlocks, std::unordered_map<int,int> newOldBlockMap);
 };
 
 #endif
