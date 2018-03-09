@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
         std::string file(argv[3]);
 
         instance.del(type, file);
-    }else if(command=="list"){
+    }else if(command=="-l"){
         if(argc==3){
             std::cout << "list0" << std::endl;
             std::string content(argv[2]);
@@ -28,7 +28,10 @@ int main(int argc, char *argv[]) {
             std::cout << "list1" << std::endl;
             instance.list();
         }
-    }else if(command=="search"){
+    }else if(command=="extract"){
+        std::string content(argv[2]);
+        instance.extract(content);
+    }else if(command=="find"){
         std::string content(argv[2]);
         instance.search(content);
     }else if(command=="-v"){

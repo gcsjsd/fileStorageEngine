@@ -108,12 +108,39 @@ SFArchive& SFArchive::extract(std::string type, std::string name) {
      * 4.call SFile.readArchive(archive, vector<int>chunks, file, size)
      */
     return *this;
+    
+    //read header
+    SFHeader header;
+    header.readHeader(this->archive);
+    
+    //check if the file exists, read the size and the chunk;
+    std::vector<int> chunks;
+    int atype = header.typeI2S(type);
+    chunks = header.getFile(atype, name);
+    if(chunks.size()==0||atype==-1){
+        std::cout<<"this file doesn't exist or has been deleted."<<std::endl;
+        return *this;
+    }
+    int fileSize = header.getFileSize(atype, name);
+    
+    SFile sfile;
+    std::ofstream extractFile(name);
+    sfile.readArchive(this->archive, chunks, extractFile, fileSize);
+    //extractFile.close();
+
+    return *this;
+
 }
 
 void SFArchive::list(std::string content) {
     /* 0.Init SFHeader header
      * 1.call header.listFiles(content)
      */
+    //read header
+    SFHeader header;
+    header.readHeader(this->archive);
+    header.listFiles(content);
+    return;
 
 }
 
@@ -121,10 +148,18 @@ void SFArchive::list(){
 /* 0.Init SFHeader header
  * 1.call header.listFiles()
  */
+<<<<<<< HEAD
+    SFHeader header;
+    header.readHeader(this->archive);
+    header.listFiles();
+    return;
+
+=======
   SFHeader header;
   header.readHeader(this->archive);
   std::cout << "going to list" << std::endl;
   header.listFiles();
+>>>>>>> b150d8bf415ed15c43737ec5fb90095672fd3135
 }
 
 void SFArchive::search(std::string content) {
@@ -134,13 +169,21 @@ void SFArchive::search(std::string content) {
 }
 
 void SFArchive::version() {
-
+    std::cout<<"SFArchive version "<<version_number<<__DATE__<<std::endl;
 }
 
 void SFArchive::error() {
-
+    std::cout<<"invalid arguments, use ./sfarchiver for more information"<<std::endl;
 }
 
 void SFArchive::info() {
-
+    std::cout<<"Usage: ./sfarchiver <command>"<<std::endl<<std::endl;
+    std::cout<<"./sfarchiver add typename filename   "<<"add a txt, pic or bin file"<<std::endl;
+    std::cout<<"./sfarchiver del typename filename   "<<"delete a file"<<std::endl;
+    std::cout<<"./sfarchiver -l (filename)           "<<"list files (matching given name)"<<std::endl;
+    std::cout<<"./sfarchiver del typename filename   "<<"delete a file"<<std::endl;
+    std::cout<<"./sfarchiver extract filename        "<<"extract a file"<<std::endl;
+    std::cout<<"./sfarchiver find content            "<<"search txt files matching the given content"<<std::endl;
+    std::cout<<"./sfarchiver -v                      "<<"show the version of this app"<<std::endl;
 }
+

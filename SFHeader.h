@@ -4,6 +4,7 @@
 #include <vector>
 #include "SFile.h"
 #include <fstream>
+#include <string>
 #include "Block.h"
 class SFHeader {
 private:
@@ -21,7 +22,10 @@ public:
 	void updateWholeHeader(std::fstream& archive);
 	void listFiles(std::string s);
 	void listFiles();
-  void printHeader();
+    void printHeader();
+	int typeI2S(std::string type);
+	std::string typeS2I(int atype);
+
 
 };
 
