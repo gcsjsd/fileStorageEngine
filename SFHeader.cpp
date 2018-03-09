@@ -2,6 +2,14 @@
 #include <iostream>
 #include <unordered_set>
 #include <unordered_map>
+
+SFHeader::SFHeader() {
+}
+
+
+SFHeader::~SFHeader() {
+}
+
 std::vector<int> SFHeader::assignChunks(int chunkNum) {
     std::vector<int> res;
     std::unordered_set<int> used;
@@ -88,7 +96,7 @@ int SFHeader::getFileSize(int atype, std::string aname) {
 }
 
 
-void SFHeader::readHeader(std::ifstream& archive) {
+void SFHeader::readHeader(std::fstream& archive) {
     archive.seekg(0);
     archive.read((char*)&(this->blocks), header_size);
 }
