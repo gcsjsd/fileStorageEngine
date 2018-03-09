@@ -21,6 +21,7 @@ public:
 	void updateWholeHeader();
 	void listFiles(std::string s);
 	void listFiles();
+  void printHeader();
 
 };
 

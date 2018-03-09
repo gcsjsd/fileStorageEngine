@@ -170,3 +170,20 @@ void SFHeader::listFiles() {
     }
 }
 
+/*
+ * Print the header. Used for test
+ */
+void SFHeader::printHeader() {
+  for (int i = 0; i < maxFileNumber; i++) {
+    std::cout << "type: " << this->blocks[i].type << std::endl;
+    std::cout << "name: " << this->blocks[i].name << std::endl;
+    std::cout << "size: " << this->blocks[i].size << " bytes" << std::endl;
+    std::cout << "exist: " << this->blocks[i].exist << std::endl;
+    std::cout << "chunks: ";
+    for (int j = 0; j < this->blocks[i].chunks.size(); j++) {
+      std::cout << this->blocks[i].chunks[j] << ", ";
+    }
+    std::cout << std::endl;
+    std::cout << "date: " << this->blocks[i].date << std::endl;
+  }
+}
