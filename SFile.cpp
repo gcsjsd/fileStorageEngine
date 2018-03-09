@@ -20,6 +20,8 @@ void SFile::writeArchive(std::fstream &archive, std::vector<int> chunks, std::if
     int cur_chunk = chunks[i];
     int writeSize = (i == numChunks-1) ? remaining : chunk_size;
     archive.seekp(header_size+cur_chunk*chunk_size);
+    int cur_pos = archive.tellp();
+    std::cout << "archive put pos: " << cur_pos << std::endl;
     char* buffer = new char[writeSize];
     file.read(buffer, writeSize);
     archive.write(buffer, writeSize);
@@ -63,7 +65,11 @@ void SFile::writeWholeArchive(std::fstream& oldArchive, std::ofstream& newArchiv
 
             int oldIdx = newOldBlockMap[newIdx];
             int remaining = oldBlocks[oldIdx].size;
-            for (int i = 0; i < oldBlocks[oldIdx].chunks.size(); i++) {
+            int totalChunks = 0;
+            while (oldBlocks[oldIdx].chunks[totalChunks] != -1) {
+              totalChunks++;
+            }
+            for (int i = 0; i < totalChunks; i++) {
                 int readSize = (remaining >= chunk_size) ? chunk_size : remaining;
                 char* buffer = new char[readSize];
                 int oldChunk = oldBlocks[oldIdx].chunks[i];

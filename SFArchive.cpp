@@ -48,7 +48,9 @@ void SFArchive::initHeader(std::ofstream &file) {
         blocks[i].day = 1;
         blocks[i].month = 1;
         blocks[i].year = 2000;
-//        blocks[i].date = __DATE__;
+        for (int j = 0; j < 100; j++) {
+          blocks[i].chunks[j] = -1;
+        }
     }
 
     file.write((char*)&blocks, sizeof(blocks));
@@ -64,10 +66,12 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
      * 2.addFileHeader, all archive header operation is done.
      * 3.call SFile.writeArchive(archive, vector<int>chunks, file)
      */
-  //std::cout << "adding..." << std::endl;
 	SFHeader header;
 	header.readHeader(this->archive);
   block_i block;
+  for (int j = 0; j < 100; j++) {
+    block.chunks[j] = -1;
+  }
   block.type = PIC;
   const char* s = name.c_str();
   int i = 0;
@@ -75,7 +79,10 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
     block.name[i] = s[i];
     i++;
   }
-  //std::cout << "while done" << std::endl;
+  while (i != 32) {
+    block.name[i] = '\0';
+    i++;
+  }
   std::ifstream file (name,  std::ios::in | std::ios::ate | std::ios::binary);
   int size = file.tellg();
   block.size = size;
@@ -86,10 +93,8 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
   for (int i = 0; i < chunks.size(); i++) {
     std::cout << chunks[i] << " " << std::endl;
   }
-  //std::ifstream file(name, std::ios::binary);
   file.seekg(0);
   SFile::writeArchive(this->archive, chunks, file, size);
-  //std::cout << "add done" << std::endl;
 	return *this;
 }
 
@@ -153,6 +158,8 @@ void SFArchive::list(){
   header.readHeader(this->archive);
   std::cout << "going to list" << std::endl;
   header.listFiles();
+  std::cout << "SFArchive::list() done" << std::endl;
+  return;
 }
 
 void SFArchive::search(std::string content) {

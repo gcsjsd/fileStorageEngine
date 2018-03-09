@@ -17,11 +17,20 @@ std::vector<int> SFHeader::assignChunks(int chunkNum) {
     std::cout << sizeof(this->blocks) / sizeof(block_i) << std::endl;
     for (int i = 0; i < sizeof(this->blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].type != AVA) {
+            std::cout << "kkkkk" << std::endl;
             std::cout << i << std::endl;
-            std::cout << "chunk num: " << this->blocks[i].chunks.size() << std::endl;
-            for (int j = 0; j < this->blocks[i].chunks.size(); j++) {
+            int totalChunks = 0;
+            int j = 0;
+            while (totalChunks != sizeof(this->blocks[i].chunks) / sizeof(short) && this->blocks[i].chunks[j] != -1 ) {
+              j+= 1;
+              totalChunks+=1;
+            }
+            std::cout << "chunk num: " << totalChunks << std::endl;
+          for (int j = 0; j < totalChunks; j++) {
+                std::cout << this->blocks[i].chunks[j] << std::endl;
                 used.insert(this->blocks[i].chunks[j]);
             }
+          std::cout << "kkkkDone" << std::endl;
         }
     }
     std::cout << "beginning assign chunks2" << std::endl;
@@ -48,7 +57,8 @@ std::vector<int> SFHeader::addFileHeader(block_i &block, std::fstream& archive) 
     std::vector<int> assignedChunks = this->assignChunks(chunkNum);
     std::cout << "assigned done" << std::endl;
     for (int i = 0; i < chunkNum; i++) {
-        block.chunks.push_back(assignedChunks[i]);
+        //block.chunks.push_back(assignedChunks[i]);
+        block.chunks[i] = (short)assignedChunks[i];
         std::cout << assignedChunks[i] << std::endl;
     }
     int blockIdx = 0;
@@ -61,8 +71,16 @@ std::vector<int> SFHeader::addFileHeader(block_i &block, std::fstream& archive) 
     int pos = blockIdx*block_size;
     int writeSize = block_size;
     archive.seekp(pos);
+    block.day = 1;
+    block.month = 1;
+    block.year = 2000;
+    block.type = PIC;
+    std::cout << "writeSize blockSize : " << writeSize << std::endl;
     //std::cout << writeSize << std::endl;
     archive.write((char*)&block, writeSize);
+    for (int i = 0; i < 20; i++)
+      std::cout << block.chunks[i] << std::endl;
+
     return assignedChunks;
 }
 void SFHeader::delFileHeader(int atype, std::string aname, std::fstream& archive) {
@@ -83,11 +101,18 @@ void SFHeader::delFileHeader(int atype, std::string aname, std::fstream& archive
 }
 
 std::vector<int> SFHeader::getFile(int atype, std::string aname) {
+    std::vector<int> res;
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         int type = this->blocks[i].type;
         std::string name(this->blocks[i].name);
         if (type == atype && name == aname && this->blocks[i].type != AVA) {
-            return this->blocks[i].chunks;
+            //return this->blocks[i].chunks;
+            int idx = 0;
+            while (idx < sizeof(this->blocks[i].chunks)/sizeof(short) && this->blocks[i].chunks[idx] != -1) {
+              res.push_back((int)this->blocks[i].chunks[idx]);
+              idx++;
+            }
+            return res;
         }
     }
     return {};
@@ -122,7 +147,11 @@ void SFHeader::updateWholeHeader(std::fstream& archive) {
     usedChunks = size / chunk_size;
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].type != AVA) {
-            neededChunks += (this->blocks[i].chunks.size());
+            int totalChunks = 0;
+            while (totalChunks < sizeof(this->blocks[i].chunks) / sizeof(short) && this->blocks[i].chunks[totalChunks] != -1) {
+              totalChunks++;
+            }
+            neededChunks += totalChunks;
         }
     }
     if (usedChunks > neededChunks*2) {
@@ -132,8 +161,10 @@ void SFHeader::updateWholeHeader(std::fstream& archive) {
             for (int j = 0; j < name_size; j++) {
                 newBlocks[i].name[j] = 'x';
             }
-            newBlocks[i].type = AVA;
             newBlocks[i].size = 0;
+            for (int k = 0; k < 20; k++) {
+              newBlocks[i].chunks[k] = -1;
+            }
 //            newBlocks[i].date = __DATE__;
         }
         int newPtr = 0;
@@ -141,8 +172,12 @@ void SFHeader::updateWholeHeader(std::fstream& archive) {
         std::unordered_map<int, int> newOldBlockMap;
         for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
             if (this->blocks[i].type != AVA) {
-                for (int j = 0; j < this->blocks[i].chunks.size(); j++) {
-                    newBlocks[newPtr].chunks.push_back(chunkPtr);
+                int totalChunks = 0;
+                while (totalChunks < sizeof(this->blocks[i].chunks) / sizeof(short) && this->blocks[i].chunks[totalChunks] != -1) {
+                    totalChunks++;
+                }
+                for (int j = 0; j < totalChunks; j++) {
+                    newBlocks[newPtr].chunks[j] = (chunkPtr);
                     chunkPtr++;
                 }
                 newBlocks[newPtr].type = this->blocks[i].type;
@@ -188,11 +223,26 @@ void SFHeader::listFiles(std::string s) {
 }
 
 void SFHeader::listFiles() {
+    std::cout << "SFHeader::listFiles()" << std::endl;
+    std::cout << sizeof(blocks) / sizeof(block_i) << std::endl;
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
+        std::cout << "type: " << this->blocks[i].type << std::endl;
         if (this->blocks[i].type != AVA) {
-                std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].day << " " << this->blocks[i].month << " " << this->blocks[i].year << std::endl;
+          std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].day << " " << this->blocks[i].month << " " << this->blocks[i].year << std::endl;
+          int totalChunks = 0;
+          while (totalChunks < sizeof(this->blocks[i].chunks) / sizeof(short) && this->blocks[i].chunks[totalChunks] != -1) {
+            totalChunks++;
+          }
+          for (int j = 0; j < totalChunks; j++) {
+            std::cout << "chunks num : " << this->blocks[i].chunks[j] << " ";
+          }
+          std::cout << std::endl;
         }
+
+        std::cout << i << std::endl;
     }
+    std::cout << "list file done" << std::endl;
+    this->printHeader();
     return;
 }
 
@@ -221,7 +271,11 @@ void SFHeader::printHeader() {
     std::cout << "name: " << this->blocks[i].name << std::endl;
     std::cout << "size: " << this->blocks[i].size << " bytes" << std::endl;
     std::cout << "chunks: ";
-    for (int j = 0; j < this->blocks[i].chunks.size(); j++) {
+    int totalChunks = 0;
+    while (totalChunks < sizeof(this->blocks[i].chunks) / sizeof(short) && this->blocks[i].chunks[totalChunks] != -1) {
+      totalChunks++;
+    }
+    for (int j = 0; j < totalChunks; j++) {
       std::cout << this->blocks[i].chunks[j] << ", ";
     }
     std::cout << std::endl;
