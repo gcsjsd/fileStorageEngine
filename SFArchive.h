@@ -11,7 +11,7 @@
 #include <ctime>
 #include <vector>
 #include "SFHeader.h"
-
+#include "SFile.h"
 
 class SFArchive {
 private:

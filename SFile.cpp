@@ -11,7 +11,7 @@ SFile::~SFile() {
 
 }
 
-void SFile::writeArchive(std::ofstream &archive, std::vector<int> chunks, std::ifstream &file, int size) {
+void SFile::writeArchive(std::fstream &archive, std::vector<int> chunks, std::ifstream &file, int size) {
   int remaining = size;
   int numChunks = chunks.size();
   file.seekg(0);
@@ -25,7 +25,7 @@ void SFile::writeArchive(std::ofstream &archive, std::vector<int> chunks, std::i
   }
   file.close();
 }
-void SFile::readArchive(std::ifstream &archive, std::vector<int> chunks, std::ofstream &file, int size) {
+void SFile::readArchive(std::fstream &archive, std::vector<int> chunks, std::ofstream &file, int size) {
   int remaining = size;
   int numChunks = chunks.size();
   file.seekp(0);

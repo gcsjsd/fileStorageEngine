@@ -15,7 +15,6 @@ SFArchive::SFArchive() {
     std::cout << archive.tellg() << std::endl;
     std::cout << archive.tellp() << std::endl;
     bool exist = true; // the .bin file has existed
-
     // if .bin doesnt exist, create the file
     if (this->archive.tellg() == -1) {
         std::cout << "Should Initialize archive.bin file with empty header" << std::endl;
@@ -31,7 +30,10 @@ SFArchive::SFArchive() {
     if (!exist) {
         this->archive.open("archive.bin", std::ios::out|std::ios::binary|std::ios::in);
     }
-
+    //SFHeader header;
+    //header.readHeader(this->archive);
+    //header.printHeader();
+    std::cout << "constructor done" << std::endl;
 
 }
 
@@ -60,9 +62,34 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
      * 2.addFileHeader, all archive header operation is done.
      * 3.call SFile.writeArchive(archive, vector<int>chunks, file)
      */
+  //std::cout << "adding..." << std::endl;
 	SFHeader header;
 	header.readHeader(this->archive);
-        return *this;
+  block_i block;
+  block.type = PIC;
+  const char* s = name.c_str();
+  int i = 0;
+  while (s[i] != '\0') {
+    block.name[i] = s[i];
+    i++;
+  }
+  //std::cout << "while done" << std::endl;
+  std::ifstream file (name,  std::ios::in | std::ios::ate | std::ios::binary);
+  int size = file.tellg();
+  block.size = size;
+
+  std::cout << "size " << block.size << std::endl;
+  block.exist = true;
+  std::vector<int> chunks = header.addFileHeader(block, this->archive);
+  std::cout << "chunks:" << std::endl;
+  for (int i = 0; i < chunks.size(); i++) {
+    std::cout << chunks[i] << " " << std::endl;
+  }
+  //std::ifstream file(name, std::ios::binary);
+  file.seekg(0);
+  SFile::writeArchive(this->archive, chunks, file, size);
+  //std::cout << "add done" << std::endl;
+	return *this;
 }
 
 SFArchive& SFArchive::del(std::string type, std::string name) {
@@ -94,6 +121,10 @@ void SFArchive::list(){
 /* 0.Init SFHeader header
  * 1.call header.listFiles()
  */
+  SFHeader header;
+  header.readHeader(this->archive);
+  std::cout << "going to list" << std::endl;
+  header.listFiles();
 }
 
 void SFArchive::search(std::string content) {
