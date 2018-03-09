@@ -11,12 +11,13 @@ SFile::~SFile() {
 
 }
 
-static void SFile::writeArchive(std::ofstream &archive, vector<int> chunks, std::ifstream &file) {
-  int remaining = this->size;
+void SFile::writeArchive(std::ofstream &archive, std::vector<int> chunks, std::ifstream &file, int size) {
+  int remaining = size;
+  int numChunks = chunks.size();
   file.seekg(0);
-  for (int i = 0; i < this->numChunks; i++) {
+  for (int i = 0; i < numChunks; i++) {
     int cur_chunk = chunks[i];
-    int writeSize = (i == this->numChunks-1) ? remaining : chunk_size;
+    int writeSize = (i == numChunks-1) ? remaining : chunk_size;
     archive.seekp(header_size+cur_chunk*chunk_size);
     char* buffer = new char[writeSize];
     file.read(buffer, writeSize);
@@ -24,12 +25,13 @@ static void SFile::writeArchive(std::ofstream &archive, vector<int> chunks, std:
   }
   file.close();
 }
-static void SFile::readArchive(std::ifstream &archive, vector<int> chunks, std::ofstream &file, int size) {
-  int remaining = this->size;
+void SFile::readArchive(std::ifstream &archive, std::vector<int> chunks, std::ofstream &file, int size) {
+  int remaining = size;
+  int numChunks = chunks.size();
   file.seekp(0);
-  for (int i = 0; i < this->numChunks; i++) {
+  for (int i = 0; i < numChunks; i++) {
     int cur_chunk = chunks[i];
-    int readSize = (i == this->numChunks-1) ? remaining : chunk_size;
+    int readSize = (i == numChunks-1) ? remaining : chunk_size;
     archive.seekg(header_size+cur_chunk*chunk_size);
     char* buffer = new char[readSize];
     archive.read(buffer, readSize);
@@ -38,8 +40,8 @@ static void SFile::readArchive(std::ifstream &archive, vector<int> chunks, std::
   file.close();
 }
 //TODO
-static void SFile::writeWholeArchive(std::fstream& oldArchive, std::ofstream& newArchive, std::vector<block_i> oldBlocks, std::vector<block_i> newBlocks, std::unordered_map<int,int> newOldBlockMap) {
-    for (int newIdx = 0; newidx < newBlocks.size(); newIdx++) {
+void SFile::writeWholeArchive(std::fstream& oldArchive, std::ofstream& newArchive, std::vector<block_i> oldBlocks, std::vector<block_i> newBlocks, std::unordered_map<int,int> newOldBlockMap) {
+    for (int newIdx = 0; newIdx < newBlocks.size(); newIdx++) {
         if (newOldBlockMap.find(newIdx) != newOldBlockMap.end()) {
 
             int oldIdx = newOldBlockMap[newIdx];

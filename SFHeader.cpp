@@ -1,10 +1,11 @@
 #include "SFHeader.h"
+#include <iostream>
 #include <unordered_set>
 #include <unordered_map>
 std::vector<int> SFHeader::assignChunks(int chunkNum) {
     std::vector<int> res;
     std::unordered_set<int> used;
-    for (int i = 0; i < this->blocks.size(); i++) {
+    for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].exist) {
             for (int j = 0; j < this->blocks[i].chunks.size(); j++) {
                 used.insert(this->blocks[i].chunks[j]);
@@ -29,12 +30,12 @@ std::vector<int> SFHeader::addFileHeader(block_i &block, std::ofstream archive) 
     if (size % chunk_size != 0) {
         chunkNum++;
     }
-    std::vector<int> assignedChunks = assignedChunks(chunkNum);
+    std::vector<int> assignedChunks = assignChunks(chunkNum);
     for (int i = 0; i < chunkNum; i++) {
         block.chunks.push_back(assignedChunks[i]);
     }
     int blockIdx = 0;
-    for (int i = 0; i < this->blocks.size(); i++) {
+    for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         if (!this->blocks[i].exist) {
             blockIdx = i;
             break;
@@ -49,7 +50,7 @@ std::vector<int> SFHeader::addFileHeader(block_i &block, std::ofstream archive) 
 }
 void SFHeader::delFileHeader(int atype, std::string aname, std::ofstream archive) {
     int blockIdx = 0;
-    for (int i = 0; i < this->blocks.size(); i++) {
+    for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         int type = this->blocks[i].type;
         std::string name(this->blocks[i].name);
         if (type == atype && name == aname) {
@@ -61,27 +62,29 @@ void SFHeader::delFileHeader(int atype, std::string aname, std::ofstream archive
     int pos = blockIdx*block_size;
     int writeSize = block_size;
     archive.seekp(pos);
-    archive.write((char*)&(this->blocks[i]), writeSize);
+    archive.write((char*)&(this->blocks[blockIdx]), writeSize);
 }
 
 std::vector<int> SFHeader::getFile(int atype, std::string aname) {
-    for (int i = 0; i < this->blocks.size(); i++) {
+    for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         int type = this->blocks[i].type;
         std::string name(this->blocks[i].name);
         if (type == atype && name == aname && this->blocks[i].exist) {
             return this->blocks[i].chunks;
         }
     }
+    return {};
 }
 
 int SFHeader::getFileSize(int atype, std::string aname) {
-    for (int i = 0; i < this->blocks.size(); i++) {
+    for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         int type = this->blocks[i].type;
         std::string name(this->blocks[i].name);
         if (type == atype && name == aname && this->blocks[i].exist) {
             return this->blocks[i].size;
         }
     }
+    return -1;
 }
 
 
@@ -89,7 +92,7 @@ void SFHeader::readHeader(std::ifstream& archive) {
     archive.seekg(0);
     archive.read((char*)&(this->blocks), header_size);
 }
-void SFHeader::writeHeader(std::ofsream& archive) {
+void SFHeader::writeHeader(std::ofstream& archive) {
     archive.seekp(0);
     archive.write((char*)&(this->blocks), header_size);
 }
@@ -97,9 +100,9 @@ void SFHeader::updateWholeHeader(std::fstream& archive) {
     int usedChunks = 0;
     int neededChunks = 0;
     archive.seekg(0, std::ios::end);
-    int size = archive.tellg() - header_size;
+    int size = (int)archive.tellg() - header_size;
     usedChunks = size / chunk_size;
-    for (int i = 0; i < this->blocks.size(); i++) {
+    for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].exist) {
             neededChunks += (this->blocks[i].chunks.size());
         }
@@ -113,12 +116,12 @@ void SFHeader::updateWholeHeader(std::fstream& archive) {
             }
             newBlocks[i].exist = false;
             newBlocks[i].size = 0;
-            newBlocks[i].date = __DATE__;
+//            newBlocks[i].date = __DATE__;
         }
         int newPtr = 0;
         int chunkPtr = 0;
         std::unordered_map<int, int> newOldBlockMap;
-        for (int i = 0; i < this->blocks.size(); i++) {
+        for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
             if (this->blocks[i].exist) {
                 for (int j = 0; j < this->blocks[i].chunks.size(); j++) {
                     newBlocks[newPtr].chunks.push_back(chunkPtr);
@@ -153,19 +156,19 @@ bool contains(char* name, std::string s) { //TODO: check if the name contains st
 }
 void SFHeader::listFiles(std::string s) {
     // go through this->blocks, check file name, list.
-    for (int i = 0; i < this->blocks.size(); i++) {
+    for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].exist) {
             if (contains(this->blocks[i].name, s)) {
-                std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].date << endl;
+                std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].date << std::endl;
             }
         }
     }
 }
 
 void SFHeader::listFiles() {
-    for (int i = 0; i < this->blocks.size(); i++) {
+    for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].exist) {
-            std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].date << endl;
+            std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].date << std::endl;
         }
     }
 }
