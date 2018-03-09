@@ -11,15 +11,20 @@ SFHeader::~SFHeader() {
 }
 
 std::vector<int> SFHeader::assignChunks(int chunkNum) {
+    std::cout << "beginning assign chunks" << std::endl;
     std::vector<int> res;
     std::unordered_set<int> used;
-    for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
+    std::cout << sizeof(this->blocks) / sizeof(block_i) << std::endl;
+    for (int i = 0; i < sizeof(this->blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].type != AVA) {
+            std::cout << i << std::endl;
+            std::cout << "chunk num: " << this->blocks[i].chunks.size() << std::endl;
             for (int j = 0; j < this->blocks[i].chunks.size(); j++) {
                 used.insert(this->blocks[i].chunks[j]);
             }
         }
     }
+    std::cout << "beginning assign chunks2" << std::endl;
     int cur_chunk = 0;
     int assigned = 0;
     while (assigned != chunkNum) {
@@ -34,13 +39,17 @@ std::vector<int> SFHeader::assignChunks(int chunkNum) {
 
 std::vector<int> SFHeader::addFileHeader(block_i &block, std::fstream& archive) {
     int size = block.size;
+    std::cout << size << std::endl;
     int chunkNum = size / chunk_size;
     if (size % chunk_size != 0) {
         chunkNum++;
     }
+    std::cout << chunkNum << std::endl;
     std::vector<int> assignedChunks = this->assignChunks(chunkNum);
+    std::cout << "assigned done" << std::endl;
     for (int i = 0; i < chunkNum; i++) {
         block.chunks.push_back(assignedChunks[i]);
+        std::cout << assignedChunks[i] << std::endl;
     }
     int blockIdx = 0;
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
@@ -52,6 +61,7 @@ std::vector<int> SFHeader::addFileHeader(block_i &block, std::fstream& archive) 
     int pos = blockIdx*block_size;
     int writeSize = block_size;
     archive.seekp(pos);
+    //std::cout << writeSize << std::endl;
     archive.write((char*)&block, writeSize);
     return assignedChunks;
 }

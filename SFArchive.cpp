@@ -44,8 +44,10 @@ void SFArchive::initHeader(std::ofstream &file) {
         for(int j=0; j<name_size; j++){
             blocks[i].name[j] = 'x';
         }
-        blocks[i].type = AVA;
         blocks[i].size = 0;
+        blocks[i].day = 1;
+        blocks[i].month = 1;
+        blocks[i].year = 2000;
 //        blocks[i].date = __DATE__;
     }
 
