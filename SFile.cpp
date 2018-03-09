@@ -22,6 +22,13 @@ void SFile::writeArchive(std::fstream &archive, std::vector<int> chunks, std::if
     char* buffer = new char[writeSize];
     file.read(buffer, writeSize);
     archive.write(buffer, writeSize);
+    delete[] buffer;
+    if (writeSize != chunk_size) {
+    	int fillSize = chunk_size - writeSize;
+    	char* buffer2 = new char[fillSize];
+    	archive.write(buffer2, fillSize);
+    	delete[] buffer2;
+    }
   }
   file.close();
 }
@@ -36,6 +43,7 @@ void SFile::readArchive(std::fstream &archive, std::vector<int> chunks, std::ofs
     char* buffer = new char[readSize];
     archive.read(buffer, readSize);
     file.write(buffer, readSize);
+    delete[] buffer;
   }
   file.close();
 }
