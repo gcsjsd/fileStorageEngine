@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
     }else if(command=="list"){
         if(argc==3){
             std::string content(argv[2]);
-            instance.l(content);
+            instance.list(content);
         }else{
-            instance.l();
+            instance.list();
         }
     }else if(command=="search"){
         std::string content(argv[2]);

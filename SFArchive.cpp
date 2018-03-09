@@ -12,8 +12,8 @@ SFArchive::SFArchive() {
 
     //open create the arch.bin if it exists
     this->archive.open("archive.bin",std::ios::out|std::ios::binary|std::ios::in);
-    std::cout << myfile.tellg() << std::endl;
-    std::cout << myfile.tellp() << std::endl;
+    std::cout << archive.tellg() << std::endl;
+    std::cout << archive.tellp() << std::endl;
     bool exist = true; // the .bin file has existed
 
     // if .bin doesnt exist, create the file
@@ -44,7 +44,7 @@ void SFArchive::initHeader(std::ofstream &file) {
         }
         blocks[i].exist = false;
         blocks[i].size = 0;
-        blocks[i].date = __DATE__;
+//        blocks[i].date = __DATE__;
     }
 
     this->archive.write((char*)&blocks, sizeof(blocks));
@@ -62,6 +62,7 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
      */
 	SFHeader header;
 	header.readHeader(this->archive);
+        return *this;
 }
 
 SFArchive& SFArchive::del(std::string type, std::string name) {
@@ -69,6 +70,7 @@ SFArchive& SFArchive::del(std::string type, std::string name) {
      * 1.call header.delFileHeader().
      * 2.Things are done
      */
+   return *this;
 }
 
 SFArchive& SFArchive::extract(std::string type, std::string name) {
@@ -78,6 +80,7 @@ SFArchive& SFArchive::extract(std::string type, std::string name) {
      * 3.call header.getFileSize()
      * 4.call SFile.readArchive(archive, vector<int>chunks, file, size)
      */
+    return *this;
 }
 
 void SFArchive::list(std::string content) {
