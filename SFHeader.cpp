@@ -84,6 +84,7 @@ std::vector<int> SFHeader::getFile(int atype, std::string aname) {
     return {};
 }
 
+
 int SFHeader::getFileSize(int atype, std::string aname) {
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         int type = this->blocks[i].type;
@@ -160,7 +161,10 @@ void SFHeader::updateWholeHeader(std::fstream& archive) {
 
 
 bool contains(char* name, std::string s) { //TODO: check if the name contains string s.
-
+    std::string tmp(name);
+    size_t pos = tmp.find(s);
+    if(pos==std::string::npos) return false;
+    else return true;
 }
 void SFHeader::listFiles(std::string s) {
     // go through this->blocks, check file name, list.
@@ -168,17 +172,37 @@ void SFHeader::listFiles(std::string s) {
         if (this->blocks[i].exist) {
             if (contains(this->blocks[i].name, s)) {
                 std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].date << std::endl;
+                std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"bytes " << this->blocks[i].date << endl;
             }
         }
     }
+    return;
 }
 
 void SFHeader::listFiles() {
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].exist) {
             std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].date << std::endl;
+            std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"bytes " << this->blocks[i].date << endl;
         }
     }
+    return;
+}
+
+int SFHeader::typeI2S(std::string type){
+    if(type=="txt") return TXT;
+    else if(type=="pic") return PIC;
+    else if(type=="bin") return BIN;
+    else return -1;
+}
+
+std::string SFHeader::typeS2I(int atype){
+    if(atype==1) return "txt";
+    else if(atype==2) return "bin";
+    else if(atype==3) return "pic";
+    else if(atype==0) return "void";
+    else if(atype==4) return "deleted";
+    else return "error";
 }
 
 /*
