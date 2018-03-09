@@ -5,6 +5,7 @@
 #include "SFile.h"
 #include <fstream>
 #include <string>
+#include <ctime>
 #include "Block.h"
 class SFHeader {
 private:

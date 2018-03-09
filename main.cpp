@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
     SFArchive instance;
     std::string command(argv[1]);
     std::cout << command << std::endl;
-    if(argc<=2){
+    if(argc<=1){
         instance.info();
     }else if(command=="add"){
         std::string type(argv[2]);
@@ -18,11 +18,10 @@ int main(int argc, char *argv[]) {
         std::string file(argv[3]);
 
         instance.del(type, file);
-    }else if(command=="-l"){
+    }else if(command=="-l"||command=="list"){
         if(argc==3){
             std::cout << "list0" << std::endl;
             std::string content(argv[2]);
-          instance.list();
             instance.list(content);
         }else{
             std::cout << "list1" << std::endl;
