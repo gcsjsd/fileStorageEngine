@@ -32,7 +32,7 @@ std::vector<int> SFHeader::assignChunks(int chunkNum) {
     return res;
 }
 
-std::vector<int> SFHeader::addFileHeader(block_i &block, std::ofstream archive) {
+std::vector<int> SFHeader::addFileHeader(block_i &block, std::fstream& archive) {
     int size = block.size;
     int chunkNum = size / chunk_size;
     if (size % chunk_size != 0) {
@@ -56,7 +56,7 @@ std::vector<int> SFHeader::addFileHeader(block_i &block, std::ofstream archive) 
     archive.write((char*)&block, writeSize);
     return assignedChunks;
 }
-void SFHeader::delFileHeader(int atype, std::string aname, std::ofstream archive) {
+void SFHeader::delFileHeader(int atype, std::string aname, std::fstream& archive) {
     int blockIdx = 0;
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         int type = this->blocks[i].type;
@@ -101,7 +101,7 @@ void SFHeader::readHeader(std::fstream& archive) {
     archive.seekg(0);
     archive.read((char*)&(this->blocks), header_size);
 }
-void SFHeader::writeHeader(std::ofstream& archive) {
+void SFHeader::writeHeader(std::fstream& archive) {
     archive.seekp(0);
     archive.write((char*)&(this->blocks), header_size);
 }
