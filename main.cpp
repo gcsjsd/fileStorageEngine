@@ -30,7 +30,8 @@ int main(int argc, char *argv[]) {
         }
     }else if(command=="extract"){
         std::string content(argv[2]);
-        instance.extract(content);
+        std::string name(argv[3]);
+        instance.extract(content, name);
     }else if(command=="find"){
         std::string content(argv[2]);
         instance.search(content);

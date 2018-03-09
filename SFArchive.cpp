@@ -44,7 +44,7 @@ void SFArchive::initHeader(std::ofstream &file) {
         for(int j=0; j<name_size; j++){
             blocks[i].name[j] = 'x';
         }
-        blocks[i].exist = false;
+        blocks[i].type = AVA;
         blocks[i].size = 0;
 //        blocks[i].date = __DATE__;
     }
@@ -79,7 +79,6 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
   block.size = size;
 
   std::cout << "size " << block.size << std::endl;
-  block.exist = true;
   std::vector<int> chunks = header.addFileHeader(block, this->archive);
   std::cout << "chunks:" << std::endl;
   for (int i = 0; i < chunks.size(); i++) {
@@ -148,18 +147,10 @@ void SFArchive::list(){
 /* 0.Init SFHeader header
  * 1.call header.listFiles()
  */
-<<<<<<< HEAD
-    SFHeader header;
-    header.readHeader(this->archive);
-    header.listFiles();
-    return;
-
-=======
   SFHeader header;
   header.readHeader(this->archive);
   std::cout << "going to list" << std::endl;
   header.listFiles();
->>>>>>> b150d8bf415ed15c43737ec5fb90095672fd3135
 }
 
 void SFArchive::search(std::string content) {
