@@ -47,7 +47,7 @@ void SFArchive::initHeader(std::ofstream &file) {
 //        blocks[i].date = __DATE__;
     }
 
-    this->archive.write((char*)&blocks, sizeof(blocks));
+    file.write((char*)&blocks, sizeof(blocks));
 
 }
 
