@@ -60,7 +60,9 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
      * 2.addFileHeader, all archive header operation is done.
      * 3.call SFile.writeArchive(archive, vector<int>chunks, file)
      */
-    return *this;
+	SFHeader header;
+	header.readHeader(this->archive);
+        return *this;
 }
 
 SFArchive& SFArchive::del(std::string type, std::string name) {
