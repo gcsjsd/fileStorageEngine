@@ -14,7 +14,7 @@
 #include "SFile.h"
 
 class SFArchive {
-private:
+public:
     float version_number;
     std::string build_time;
     std::fstream archive;

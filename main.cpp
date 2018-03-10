@@ -39,5 +39,6 @@ int main(int argc, char *argv[]) {
     }else{
         instance.error();
     }
+    instance.archive.close();
     return 0;
 }
