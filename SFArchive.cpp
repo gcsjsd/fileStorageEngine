@@ -134,12 +134,17 @@ SFArchive& SFArchive::extract(std::string type, std::string name) {
         std::cout<<"this file doesn't exist or has been deleted."<<std::endl;
         return *this;
     }
+    std::cout << "chunks to be extracted.." << std::endl;
+    for (int i = 0; i < chunks.size(); i++) {
+      std::cout << chunks[i] << " ";
+    }
+    std::cout << std::endl;
     int fileSize = header.getFileSize(atype, name);
     
     SFile sfile;
     std::ofstream extractFile(name);
     sfile.readArchive(this->archive, chunks, extractFile, fileSize);
-    //extractFile.close();
+    extractFile.close();
 
     return *this;
 
