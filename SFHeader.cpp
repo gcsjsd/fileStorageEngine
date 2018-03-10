@@ -180,7 +180,7 @@ void SFHeader::listFiles(std::string s) {
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].type != AVA) {
             if (contains(this->blocks[i].name, s)) {
-                std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].day << " " << this->blocks[i].month << " " << this->blocks[i].year << std::endl;
+                std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].day << "/" << this->blocks[i].month << "/" << this->blocks[i].year << std::endl;
             }
         }
     }
@@ -190,7 +190,7 @@ void SFHeader::listFiles(std::string s) {
 void SFHeader::listFiles() {
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].type != AVA) {
-                std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].day << " " << this->blocks[i].month << " " << this->blocks[i].year << std::endl;
+                std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].day << "/" << this->blocks[i].month << "/" << this->blocks[i].year << std::endl;
         }
     }
     return;
