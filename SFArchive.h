@@ -15,19 +15,19 @@
 
 class SFArchive {
 public:
-    float version_number;
-    std::string build_time;
+    //static float version_number;
+    //static std::string build_time;
     std::fstream archive;
 
 public:
     SFArchive(std::string archiveName); //initialize the SFArchive
     ~SFArchive(); // close the .bin file
 
-    SFArchive& add(std::string type, std::string name); // ./sf add type file :: u cant add the file with the same name twice
+    SFArchive& add(std::string name); // ./sf add type file :: u cant add the file with the same name twice
 
-    SFArchive& del(std::string type, std::string name); // ./sf del type file :: set the flag in the header
+    SFArchive& del(std::string name); // ./sf del type file :: set the flag in the header
 
-    SFArchive& extract(std::string type, std::string name);
+    SFArchive& extract(std::string name);
 
     void list(std::string content); // ./sf l content :: show the list of the file whose title has string of "content"
 
@@ -35,11 +35,11 @@ public:
 
     void search(std::string content); // ./sf search content :: search the txt files whose content has this string
 
-    void version(); //./sf -v :: version + compile date
+    static void version(); //./sf -v :: version + compile date
 
     //the metadata for a file in the header
 
-    void error(); // :: show error type (invalid arg, insufficient arg)
+    static void error(); // :: show error type (invalid arg, insufficient arg)
     
     static void info() {
         std::cout<<"Usage: ./sfarchiver <command>"<<std::endl<<std::endl;

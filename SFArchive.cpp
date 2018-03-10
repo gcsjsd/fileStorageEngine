@@ -7,8 +7,8 @@
 SFArchive::SFArchive(std::string archiveName) {
 
     //version and compile time
-    version_number = 0.0;
-    build_time = __DATE__;
+    //version_number = 0.0;
+    //build_time = __DATE__;
 
     //open create the arch.bin if it exists
     this->archive.open(archiveName,std::ios::out|std::ios::binary|std::ios::in);
@@ -56,7 +56,7 @@ void SFArchive::initHeader(std::ofstream &file) {
 SFArchive::~SFArchive() {
     this->archive.close();
 }
-SFArchive& SFArchive::add(std::string type, std::string name) {
+SFArchive& SFArchive::add(std::string name) {
     /* 0.Init SFHeader header.
      * 1.open the file, create block for this file.
      * 2.addFileHeader, all archive header operation is done.
@@ -68,7 +68,8 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
   for (int j = 0; j < 100; j++) {
     block.chunks[j] = -1;
   }
-  block.type = PIC; //TODO: what's type ?
+  int type = header.typeI2S(name);
+  block.type = type;
   const char* s = name.c_str();
   int i = 0;
   while (s[i] != '\0') {
@@ -96,7 +97,7 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
   return *this;
 }
 
-SFArchive& SFArchive::del(std::string type, std::string name) {
+SFArchive& SFArchive::del(std::string name) {
     /* 0.Init SFHeader header
      * 1.call header.delFileHeader().
      * 2.Things are done
@@ -104,7 +105,7 @@ SFArchive& SFArchive::del(std::string type, std::string name) {
    return *this;
 }
 
-SFArchive& SFArchive::extract(std::string type, std::string name) {
+SFArchive& SFArchive::extract(std::string name) {
     /* 0.Init SFHeader header
      * 1.ofstream open file
      * 2.call header.getFile()
@@ -117,9 +118,9 @@ SFArchive& SFArchive::extract(std::string type, std::string name) {
 
     //check if the file exists, read the size and the chunk;
     std::vector<int> chunks;
-    int atype = header.typeI2S(type);
-    chunks = header.getFile(atype, name);
-    if(chunks.size()==0||atype==-1){
+    //int atype = header.typeI2S(type);
+    chunks = header.getFile(name);
+    if(chunks.size()==0){
         std::cout<<"this file doesn't exist or has been deleted."<<std::endl;
         return *this;
     }
@@ -128,7 +129,7 @@ SFArchive& SFArchive::extract(std::string type, std::string name) {
       std::cout << chunks[i] << " ";
     }
     std::cout << std::endl;
-    int fileSize = header.getFileSize(atype, name);
+    int fileSize = header.getFileSize(name);
     
     SFile sfile;
     std::ofstream extractFile(name);
@@ -173,7 +174,7 @@ void SFArchive::search(std::string content) {
 	TXTFiles = header.find_txt_Files();
 	for (std::string txtName : TXTFiles) {
 		std::vector<int>txtFile;
-		txtFile = header.getFile(1, txtName);
+		txtFile = header.getFile(txtName);
 		for (int i : txtFile) {
 			archive.seekg(0);
 			archive.seekg(header_size + i * chunk_size);
@@ -192,7 +193,7 @@ void SFArchive::search(std::string content) {
 }
 
 void SFArchive::version() {
-    std::cout<<"SFArchive version "<<version_number<<__DATE__<<std::endl;
+    std::cout<<"SFArchive version "<<1.0<<__DATE__<<std::endl;
 }
 
 void SFArchive::error() {

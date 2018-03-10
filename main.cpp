@@ -52,9 +52,9 @@ int main(int argc, char *argv[]) {
                 instance.search(content);
 
         }else if(command=="-v"){
-            instance.version();
+            SFArchive::version();
         }else{
-            instance.error();
+            SFArchive::error();
         }
     return 0;
 	}
