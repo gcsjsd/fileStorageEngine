@@ -8,7 +8,7 @@
 #include "Block.h"
 class SFHeader;
 
-class SFile { // encode and decode single file in header.
+class SFile {
 public:
 	SFile();
 	~SFile();
