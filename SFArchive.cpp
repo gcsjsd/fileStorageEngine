@@ -4,6 +4,7 @@
 
 #include "SFArchive.h"
 #include <vector>
+#include <stdio.h>
 SFArchive::SFArchive(std::string archiveName) {
 
     //version and compile time
@@ -101,6 +102,34 @@ SFArchive& SFArchive::del(std::string type, std::string name) {
      * 1.call header.delFileHeader().
      * 2.Things are done
      */
+   SFHeader header;
+   header.readHeader(this->archive);
+   bool needDel = header.delFileHeader(name, this->archive);
+   if (needDel) {
+     std::string newName = this->archiveName + ".temp";
+     fstream newStream.open(newName, std::ios::out | std::ios::app);
+     header.update(this->archive, newStream);
+     this->archive.close();
+     newStream.close();
+
+     if(remove(archivename.c_str()) != 0 )
+       perror( "Error deleting file" );
+     else
+       puts( "File successfully deleted" );
+
+     int ret;
+     char* oldname = newName.c_str();
+     char* newname = this->archivename.c_str();
+
+     ret = rename(oldname, newname);
+
+     if(ret == 0) {
+        printf("File renamed successfully");
+     } else {
+      printf("Error: unable to rename the file");
+     }
+
+   }
    return *this;
 }
 
