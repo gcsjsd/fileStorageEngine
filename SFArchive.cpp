@@ -45,6 +45,7 @@ void SFArchive::initHeader(std::ofstream &file) {
             blocks[i].name[j] = 'x';
         }
         blocks[i].size = 0;
+
         blocks[i].day = 1;
         blocks[i].month = 1;
         blocks[i].year = 2000;
@@ -65,8 +66,8 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
      * 3.call SFile.writeArchive(archive, vector<int>chunks, file)
      */
   //std::cout << "adding..." << std::endl;
-	SFHeader header;
-	header.readHeader(this->archive);
+ SFHeader header;
+  header.readHeader(this->archive);
   block_i block;
   block.type = PIC;
   const char* s = name.c_str();
@@ -79,6 +80,12 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
   std::ifstream file (name,  std::ios::in | std::ios::ate | std::ios::binary);
   int size = file.tellg();
   block.size = size;
+  
+  time_t t = time(0);
+  struct tm *now = localtime(&t);
+  block.day = now->tm_mday;
+  block.month = now->tm_mon+1;
+  block.year = now->tm_year+1900;
 
   std::cout << "size " << block.size << std::endl;
   std::vector<int> chunks = header.addFileHeader(block, this->archive);
@@ -90,7 +97,7 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
   file.seekg(0);
   SFile::writeArchive(this->archive, chunks, file, size);
   //std::cout << "add done" << std::endl;
-	return *this;
+  return *this;
 }
 
 SFArchive& SFArchive::del(std::string type, std::string name) {
