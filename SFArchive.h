@@ -18,7 +18,7 @@ public:
     //static float version_number;
     //static std::string build_time;
     std::fstream archive;
-
+    std::string archiveName;
 public:
     SFArchive(std::string archiveName); //initialize the SFArchive
     ~SFArchive(); // close the .bin file
