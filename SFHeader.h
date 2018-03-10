@@ -27,7 +27,7 @@ public:
 	int typeI2S(std::string type);
 	std::string typeS2I(int atype);
 
-
+	std::vector<std::string> find_txt_Files();
 };
 
 #endif

@@ -286,3 +286,15 @@ void SFHeader::printHeader() {
     std::cout << "day: " << this->blocks[i].day << std::endl;
   }
 }
+
+
+std::vector<std::string> SFHeader::find_txt_Files() {
+	std::vector<std::string> res;
+	for (int i = 0; i < sizeof(blocks) / sizeof(block_i); i++) {
+		std::string name(this->blocks[i].name);
+		if (this->blocks[i].type == TXT) {
+			res.push_back(name);
+			}
+		}			
+	return res;
+	}

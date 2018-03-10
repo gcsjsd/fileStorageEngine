@@ -171,9 +171,33 @@ void SFArchive::list(){
 }
 
 void SFArchive::search(std::string content) {
-    /*
-     *
+    /*1.call find_txt_Files()
+     *2.call  header.getFile()
+	 *3.found->call Header.list()
      */
+	SFHeader header;
+	bool found = false;
+	header.readHeader(this->archive);
+	std::vector<std::string> TXTFiles;
+	TXTFiles = header.find_txt_Files();
+	for (std::string txtName : TXTFiles) {
+		std::vector<int>txtFile;
+		txtFile = header.getFile(1, txtName);
+		for (int i : txtFile) {
+			archive.seekg(0);
+			archive.seekg(header_size + i * chunk_size);
+			std::istreambuf_iterator<char>begin(archive);
+			archive.seekg(header_size + i * chunk_size+chunk_size);
+			std::istreambuf_iterator<char>end(archive);
+			std::string txt(begin, end);
+			if (txt.find(content) != std::string::npos) {
+				header.listFiles(txtName);
+				found = true;
+				break;
+			}
+		}
+	}
+	if (!found)std::cout << content << " doesn't exist." << std::endl;
 }
 
 void SFArchive::version() {
