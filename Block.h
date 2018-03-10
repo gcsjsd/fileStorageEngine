@@ -6,7 +6,7 @@
 #define FILESTORAGE_BLOCK_H
 #define AVA 0
 #define TXT 1
-#define BIN 2
+#define OTH 2
 #define PIC 3
 #define DEL 4
 

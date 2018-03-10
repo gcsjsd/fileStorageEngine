@@ -24,7 +24,7 @@ public:
 	void listFiles(std::string s);
 	void listFiles();
     void printHeader();
-	int typeI2S(std::string type);
+	int typeI2S(std::string fileName);
 	std::string typeS2I(int atype);
 
 	std::vector<std::string> find_txt_Files();
