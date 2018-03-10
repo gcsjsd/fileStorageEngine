@@ -4,21 +4,21 @@
 
 #include "SFArchive.h"
 #include <vector>
-SFArchive::SFArchive() {
+SFArchive::SFArchive(std::string archiveName) {
 
     //version and compile time
     version_number = 0.0;
     build_time = __DATE__;
 
     //open create the arch.bin if it exists
-    this->archive.open("archive.bin",std::ios::out|std::ios::binary|std::ios::in);
+    this->archive.open(archiveName,std::ios::out|std::ios::binary|std::ios::in);
     bool exist = true; // the .bin file has existed
     // if .bin doesnt exist, create the file
     if (this->archive.tellg() == -1) {
-        std::cout << "Creating archive..." << std::endl;
+        std::cout << "Creating archive..." << archiveName << std::endl;
         this->archive.close();
         std::ofstream archive1;
-        archive1.open("archive.bin", std::ios::out|std::ios::app);
+        archive1.open(archiveName, std::ios::out|std::ios::app);
         this->initHeader(archive1); //initialize the header of the file
         archive1.close();
         exist = false;
@@ -27,7 +27,7 @@ SFArchive::SFArchive() {
 
     // if just created, open this file again.
     if (!exist) {
-        this->archive.open("archive.bin", std::ios::out|std::ios::binary|std::ios::in);
+        this->archive.open(archiveName, std::ios::out|std::ios::binary|std::ios::in);
     }
 
 }

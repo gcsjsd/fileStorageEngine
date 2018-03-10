@@ -4,12 +4,14 @@
 #include "SFArchive.h"
 
 int main(int argc, char *argv[]) {
-    SFArchive instance;
-    std::string command(argv[1]);
+    SFArchive instance("pictures");
     //std::cout << command << std::endl;
-    if(argc<=1){
+   if(argc<=1){
         instance.info();
-    }else if(command=="add"){
+    }else{
+        
+    std::string command(argv[1]);
+    if(command=="add"){
         std::string type(argv[2]);
         std::string file(argv[3]);
         instance.add(type, file);
@@ -39,6 +41,6 @@ int main(int argc, char *argv[]) {
     }else{
         instance.error();
     }
-    instance.archive.close();
     return 0;
+	}
 }

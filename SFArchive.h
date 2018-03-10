@@ -20,7 +20,7 @@ public:
     std::fstream archive;
 
 public:
-    SFArchive(); //initialize the SFArchive
+    SFArchive(std::string archiveName); //initialize the SFArchive
     ~SFArchive(); // close the .bin file
 
     SFArchive& add(std::string type, std::string name); // ./sf add type file :: u cant add the file with the same name twice
