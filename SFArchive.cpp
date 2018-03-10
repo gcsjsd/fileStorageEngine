@@ -12,8 +12,6 @@ SFArchive::SFArchive() {
 
     //open create the arch.bin if it exists
     this->archive.open("archive.bin",std::ios::out|std::ios::binary|std::ios::in);
-    //std::cout << archive.tellg() << std::endl;
-    //std::cout << archive.tellp() << std::endl;
     bool exist = true; // the .bin file has existed
     // if .bin doesnt exist, create the file
     if (this->archive.tellg() == -1) {
@@ -91,17 +89,10 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
   block.month = now->tm_mon+1;
   block.year = now->tm_year+1900;
 
-  //std::cout << "size " << block.size << std::endl;
   std::vector<int> chunks = header.addFileHeader(block, this->archive);
-  //std::cout << "chunks:" << std::endl;
-  /*
-  for (int i = 0; i < chunks.size(); i++) {
-    std::cout << chunks[i] << " " << std::endl;
-  }
-   */
   file.seekg(0);
   SFile::writeArchive(this->archive, chunks, file, size);
-  //std::cout << "add done" << std::endl;
+
   return *this;
 }
 
@@ -120,9 +111,7 @@ SFArchive& SFArchive::extract(std::string type, std::string name) {
      * 3.call header.getFileSize()
      * 4.call SFile.readArchive(archive, vector<int>chunks, file, size)
      */
-    //return *this;
-    
-    //read header
+
     SFHeader header;
     header.readHeader(this->archive);
 
@@ -168,9 +157,7 @@ void SFArchive::list(){
  */
   SFHeader header;
   header.readHeader(this->archive);
-  //std::cout << "going to list" << std::endl;
   header.listFiles();
-  //std::cout << "SFArchive::list() done" << std::endl;
   return;
 }
 

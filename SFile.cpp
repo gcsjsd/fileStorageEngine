@@ -12,7 +12,6 @@ SFile::~SFile() {
 }
 
 void SFile::writeArchive(std::fstream &archive, std::vector<int> chunks, std::ifstream &file, int size) {
-  std::cout << "starting write archive " << std::endl;
   int remaining = size;
   int numChunks = chunks.size();
   file.seekg(0);
@@ -20,16 +19,12 @@ void SFile::writeArchive(std::fstream &archive, std::vector<int> chunks, std::if
     int cur_chunk = chunks[i];
     int writeSize = (i == numChunks-1) ? remaining : chunk_size;
     archive.seekp(header_size+cur_chunk*chunk_size);
-    int cur_pos = archive.tellp();
-    std::cout << "archive put pos: " << cur_pos << std::endl;
     char* buffer = new char[writeSize];
     file.read(buffer, writeSize);
     archive.write(buffer, writeSize);
     delete[] buffer;
-    std::cout << "write size: " << writeSize << std::endl;
     if (writeSize != chunk_size) {
     	int fillSize = chunk_size - writeSize;
-      std::cout << fillSize << std::endl;
     	char* buffer2 = new char[fillSize];
       for (int k = 0; k < fillSize; k++) {
         buffer2[k] = '\0';
@@ -40,7 +35,6 @@ void SFile::writeArchive(std::fstream &archive, std::vector<int> chunks, std::if
     remaining -= chunk_size;
 
   }
-  std::cout << "starting write archive done" << std::endl;
   file.close();
 }
 void SFile::readArchive(std::fstream &archive, std::vector<int> chunks, std::ofstream &file, int size) {
