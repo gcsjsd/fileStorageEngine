@@ -11,29 +11,29 @@ SFHeader::~SFHeader() {
 }
 
 std::vector<int> SFHeader::assignChunks(int chunkNum) {
-    std::cout << "beginning assign chunks" << std::endl;
+    //std::cout << "beginning assign chunks" << std::endl;
     std::vector<int> res;
     std::unordered_set<int> used;
-    std::cout << sizeof(this->blocks) / sizeof(block_i) << std::endl;
+    //std::cout << sizeof(this->blocks) / sizeof(block_i) << std::endl;
     for (int i = 0; i < sizeof(this->blocks)/sizeof(block_i); i++) {
         if (this->blocks[i].type != AVA) {
-            std::cout << "kkkkk" << std::endl;
-            std::cout << i << std::endl;
+            //std::cout << "kkkkk" << std::endl;
+            //std::cout << i << std::endl;
             int totalChunks = 0;
             int j = 0;
             while (totalChunks != sizeof(this->blocks[i].chunks) / sizeof(short) && this->blocks[i].chunks[j] != -1 ) {
               j+= 1;
               totalChunks+=1;
             }
-            std::cout << "chunk num: " << totalChunks << std::endl;
+            //std::cout << "chunk num: " << totalChunks << std::endl;
           for (int j = 0; j < totalChunks; j++) {
-                std::cout << this->blocks[i].chunks[j] << std::endl;
+                //std::cout << this->blocks[i].chunks[j] << std::endl;
                 used.insert(this->blocks[i].chunks[j]);
             }
-          std::cout << "kkkkDone" << std::endl;
+          //std::cout << "kkkkDone" << std::endl;
         }
     }
-    std::cout << "beginning assign chunks2" << std::endl;
+    //std::cout << "beginning assign chunks2" << std::endl;
     int cur_chunk = 0;
     int assigned = 0;
     while (assigned != chunkNum) {
@@ -48,18 +48,18 @@ std::vector<int> SFHeader::assignChunks(int chunkNum) {
 
 std::vector<int> SFHeader::addFileHeader(block_i &block, std::fstream& archive) {
     int size = block.size;
-    std::cout << size << std::endl;
+    //std::cout << size << std::endl;
     int chunkNum = size / chunk_size;
     if (size % chunk_size != 0) {
         chunkNum++;
     }
-    std::cout << chunkNum << std::endl;
+    //std::cout << chunkNum << std::endl;
     std::vector<int> assignedChunks = this->assignChunks(chunkNum);
-    std::cout << "assigned done" << std::endl;
+    //std::cout << "assigned done" << std::endl;
     for (int i = 0; i < chunkNum; i++) {
         //block.chunks.push_back(assignedChunks[i]);
         block.chunks[i] = (short)assignedChunks[i];
-        std::cout << assignedChunks[i] << std::endl;
+        //std::cout << assignedChunks[i] << std::endl;
     }
     int blockIdx = 0;
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
@@ -75,12 +75,13 @@ std::vector<int> SFHeader::addFileHeader(block_i &block, std::fstream& archive) 
     block.month = 1;
     block.year = 2000;
     block.type = PIC;
-    std::cout << "writeSize blockSize : " << writeSize << std::endl;
+    //std::cout << "writeSize blockSize : " << writeSize << std::endl;
     //std::cout << writeSize << std::endl;
     archive.write((char*)&block, writeSize);
+    /*
     for (int i = 0; i < 20; i++)
       std::cout << block.chunks[i] << std::endl;
-
+    */
     return assignedChunks;
 }
 void SFHeader::delFileHeader(int atype, std::string aname, std::fstream& archive) {
@@ -105,6 +106,8 @@ std::vector<int> SFHeader::getFile(int atype, std::string aname) {
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         int type = this->blocks[i].type;
         std::string name(this->blocks[i].name);
+        //std::cout << "file type is : " << type << " file name is : " << name << std::endl;
+        //std::cout << "afile type is : " << atype << " file name is : " << aname << std::endl;
         if (type == atype && name == aname && this->blocks[i].type != AVA) {
             //return this->blocks[i].chunks;
             int idx = 0;
@@ -223,10 +226,10 @@ void SFHeader::listFiles(std::string s) {
 }
 
 void SFHeader::listFiles() {
-    std::cout << "SFHeader::listFiles()" << std::endl;
-    std::cout << sizeof(blocks) / sizeof(block_i) << std::endl;
+    //std::cout << "SFHeader::listFiles()" << std::endl;
+    //std::cout << sizeof(blocks) / sizeof(block_i) << std::endl;
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
-        std::cout << "type: " << this->blocks[i].type << std::endl;
+        //std::cout << "type: " << this->blocks[i].type << std::endl;
         if (this->blocks[i].type != AVA) {
           /*
           std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].day << " " << this->blocks[i].month << " " << this->blocks[i].year << std::endl;
@@ -243,10 +246,10 @@ void SFHeader::listFiles() {
 
         }
 
-        std::cout << i << std::endl;
+        //std::cout << i << std::endl;
     }
-    std::cout << "list file done" << std::endl;
-    this->printHeader();
+    //std::cout << "list file done" << std::endl;
+    //this->printHeader();
     return;
 }
 
@@ -297,4 +300,4 @@ std::vector<std::string> SFHeader::find_txt_Files() {
 			}
 		}			
 	return res;
-	}
+}

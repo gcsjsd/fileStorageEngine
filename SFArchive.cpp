@@ -12,28 +12,25 @@ SFArchive::SFArchive() {
 
     //open create the arch.bin if it exists
     this->archive.open("archive.bin",std::ios::out|std::ios::binary|std::ios::in);
-    std::cout << archive.tellg() << std::endl;
-    std::cout << archive.tellp() << std::endl;
+    //std::cout << archive.tellg() << std::endl;
+    //std::cout << archive.tellp() << std::endl;
     bool exist = true; // the .bin file has existed
     // if .bin doesnt exist, create the file
     if (this->archive.tellg() == -1) {
-        std::cout << "Should Initialize archive.bin file with empty header" << std::endl;
+        std::cout << "Creating archive..." << std::endl;
         this->archive.close();
         std::ofstream archive1;
         archive1.open("archive.bin", std::ios::out|std::ios::app);
         this->initHeader(archive1); //initialize the header of the file
         archive1.close();
         exist = false;
+        std::cout << "Creating archive done." << std::endl;
     }
 
     // if just created, open this file again.
     if (!exist) {
         this->archive.open("archive.bin", std::ios::out|std::ios::binary|std::ios::in);
     }
-    //SFHeader header;
-    //header.readHeader(this->archive);
-    //header.printHeader();
-    std::cout << "constructor done" << std::endl;
 
 }
 
@@ -73,7 +70,7 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
   for (int j = 0; j < 100; j++) {
     block.chunks[j] = -1;
   }
-  block.type = PIC;
+  block.type = PIC; //TODO: what's type ?
   const char* s = name.c_str();
   int i = 0;
   while (s[i] != '\0') {
@@ -94,12 +91,14 @@ SFArchive& SFArchive::add(std::string type, std::string name) {
   block.month = now->tm_mon+1;
   block.year = now->tm_year+1900;
 
-  std::cout << "size " << block.size << std::endl;
+  //std::cout << "size " << block.size << std::endl;
   std::vector<int> chunks = header.addFileHeader(block, this->archive);
-  std::cout << "chunks:" << std::endl;
+  //std::cout << "chunks:" << std::endl;
+  /*
   for (int i = 0; i < chunks.size(); i++) {
     std::cout << chunks[i] << " " << std::endl;
   }
+   */
   file.seekg(0);
   SFile::writeArchive(this->archive, chunks, file, size);
   //std::cout << "add done" << std::endl;
@@ -121,12 +120,12 @@ SFArchive& SFArchive::extract(std::string type, std::string name) {
      * 3.call header.getFileSize()
      * 4.call SFile.readArchive(archive, vector<int>chunks, file, size)
      */
-    return *this;
+    //return *this;
     
     //read header
     SFHeader header;
     header.readHeader(this->archive);
-    
+
     //check if the file exists, read the size and the chunk;
     std::vector<int> chunks;
     int atype = header.typeI2S(type);
@@ -164,9 +163,9 @@ void SFArchive::list(){
  */
   SFHeader header;
   header.readHeader(this->archive);
-  std::cout << "going to list" << std::endl;
+  //std::cout << "going to list" << std::endl;
   header.listFiles();
-  std::cout << "SFArchive::list() done" << std::endl;
+  //std::cout << "SFArchive::list() done" << std::endl;
   return;
 }
 
