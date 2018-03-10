@@ -199,14 +199,4 @@ void SFArchive::error() {
     std::cout<<"invalid arguments, use ./sfarchiver for more information"<<std::endl;
 }
 
-void SFArchive::info() {
-    std::cout<<"Usage: ./sfarchiver <command>"<<std::endl<<std::endl;
-    std::cout<<"./sfarchiver add typename filename   "<<"add a txt, pic or bin file"<<std::endl;
-    std::cout<<"./sfarchiver del typename filename   "<<"delete a file"<<std::endl;
-    std::cout<<"./sfarchiver -l (filename)           "<<"list files (matching given name)"<<std::endl;
-    std::cout<<"./sfarchiver del typename filename   "<<"delete a file"<<std::endl;
-    std::cout<<"./sfarchiver extract filename        "<<"extract a file"<<std::endl;
-    std::cout<<"./sfarchiver find content            "<<"search txt files matching the given content"<<std::endl;
-    std::cout<<"./sfarchiver -v                      "<<"show the version of this app"<<std::endl;
-}
 
