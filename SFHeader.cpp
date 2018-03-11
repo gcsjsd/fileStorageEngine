@@ -65,7 +65,6 @@ std::vector<int> SFHeader::addFileHeader(block_i &block, std::fstream& archive) 
     block.day = 1;
     block.month = 1;
     block.year = 2000;
-    block.type = PIC;
     archive.write((char*)&block, writeSize);
 
     return assignedChunks;
