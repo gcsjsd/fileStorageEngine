@@ -82,10 +82,17 @@ SFArchive& SFArchive::add(std::string name) {
     block.name[i] = '\0';
     i++;
   }
+  std::ifstream file1(name);
+  if (file1.tellg()==-1) {
+    std::cout << "file " << name << " doesn't exist!" << std::endl;
+    file1.close();
+    return *this;
+  }
+  file1.close();
   std::ifstream file (name,  std::ios::in | std::ios::ate | std::ios::binary);
   int size = file.tellg();
   block.size = size;
-  
+  std::cout << "adding file to archive ..." << std::endl;
   time_t t = time(0);
   struct tm *now = localtime(&t);
   block.day = now->tm_mday;
@@ -95,7 +102,7 @@ SFArchive& SFArchive::add(std::string name) {
   std::vector<int> chunks = header.addFileHeader(block, this->archive);
   file.seekg(0);
   SFile::writeArchive(this->archive, chunks, file, size);
-
+  std::cout << "add file done" << std::endl;
   return *this;
 }
 
@@ -156,18 +163,14 @@ SFArchive& SFArchive::extract(std::string name) {
         std::cout<<"this file doesn't exist or has been deleted."<<std::endl;
         return *this;
     }
-    std::cout << "chunks to be extracted.." << std::endl;
-    for (int i = 0; i < chunks.size(); i++) {
-      std::cout << chunks[i] << " ";
-    }
-    std::cout << std::endl;
+
     int fileSize = header.getFileSize(name);
     
     SFile sfile;
     std::ofstream extractFile(name);
     sfile.readArchive(this->archive, chunks, extractFile, fileSize);
     extractFile.close();
-
+    std::cout << "extract done" << std::endl;
     return *this;
 
 }
