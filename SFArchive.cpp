@@ -59,52 +59,58 @@ SFArchive& SFArchive::add(std::string name) {
    */
 	SFHeader header;
 	header.readHeader(this->archive);
-  block_i block;
-  for (int j = 0; j < 100; j++) {
-    block.chunks[j] = -1;
-  }
-  std::vector<std::string> files = header.getFileName();
-  for (std::string s : files) {
-  	if (s == name) {
-  		std::cout << "INVALID: file " << name << " already exists in the archive " << this->archiveName << std::endl;
+	block_i block;
+	for (int j = 0; j < 100; j++) {
+		block.chunks[j] = -1;
+	}
+	std::string name1(name);
+	int pos = 0;
+	std::string delimiter("/");
+	while (name1.find(delimiter) != std::string::npos) {
+		pos = name1.find(delimiter);
+		name1.erase(0, pos + delimiter.length());
+	}
+  	std::vector<std::string> files = header.getFileName();
+  	for (std::string s : files) {
+  		if (s == name1) {
+  			std::cout << "INVALID: file " << name << " already exists in the archive " << this->archiveName << std::endl;
+  			return *this;
+  		}
+  	}
+  	int type = header.typeI2S(name);
+  	block.type = type;
+  	const char* s = name1.c_str();
+  	int i = 0;
+  	while (s[i] != '\0') {
+  		block.name[i] = s[i];
+  		i++;
+  	}
+  	while (i != 32) {
+  		block.name[i] = '\0';
+  		i++;
+  	}
+  	std::ifstream file1(name);
+  	if (file1.tellg()==-1) {
+  		std::cout << "file " << name << " doesn't exist!" << std::endl;
+  		file1.close();
   		return *this;
   	}
-  }
-  int type = header.typeI2S(name);
-  block.type = type;
-  const char* s = name.c_str();
-  int i = 0;
-  while (s[i] != '\0') {
-    block.name[i] = s[i];
-    i++;
-  }
-  while (i != 32) {
-    block.name[i] = '\0';
-    i++;
-  }
-  std::ifstream file1(name);
-  if (file1.tellg()==-1) {
-    std::cout << "file " << name << " doesn't exist!" << std::endl;
-    file1.close();
-    return *this;
-  }
-  file1.close();
-  std::ifstream file (name,  std::ios::in | std::ios::ate | std::ios::binary);
-  int size = file.tellg();
-  block.size = size;
-  std::cout << "adding file to archive ..." << std::endl;
-  time_t t = time(0);
-  struct tm *now = localtime(&t);
-  block.day = now->tm_mday;
-  block.month = now->tm_mon+1;
-  block.year = now->tm_year+1900;
+  	file1.close();
+  	std::ifstream file (name,  std::ios::in | std::ios::ate | std::ios::binary);
+  	int size = file.tellg();
+  	block.size = size;
+  	std::cout << "adding file to archive ..." << std::endl;
+  	time_t t = time(0);
+  	struct tm *now = localtime(&t);
+  	block.day = now->tm_mday;
+  	block.month = now->tm_mon+1;
+  	block.year = now->tm_year+1900;
+  	std::vector<int> chunks = header.addFileHeader(block, this->archive);
+  	file.seekg(0);
+  	SFile::writeArchive(this->archive, chunks, file, size);
+  	std::cout << "add file to archive done" << std::endl;
 
-  std::vector<int> chunks = header.addFileHeader(block, this->archive);
-  file.seekg(0);
-  SFile::writeArchive(this->archive, chunks, file, size);
-  std::cout << "add file to archive done" << std::endl;
-
-  return *this;
+  	return *this;
 }
 
 SFArchive& SFArchive::del(std::string name) {
@@ -198,44 +204,47 @@ void SFArchive::list(){
   return;
 }
 
+
 void SFArchive::search(std::string content) {
     /*1.call find_txt_Files()
      *2.call  header.getFile()
-	   *3.found->call Header.list()
+	 *3.found->call Header.list()
      */
 	SFHeader header;
 	header.readHeader(this->archive);
 	std::vector<std::string> TXTFiles;
 	TXTFiles = header.find_txt_Files();
-  std::vector<std::string> foundFiles;
+	std::vector<std::string> foundFiles;
 	for (std::string txtName : TXTFiles) {
+    	std::cout << "searching in " << txtName << std::endl;
+
 		std::vector<int> txtFile = header.getFile(txtName);
-    int txtSize = header.getFileSize(txtName);
-    char* bufferTXT = new char[txtSize];
-    int readPos = 0;
+    	int txtSize = header.getFileSize(txtName);
+    	char* bufferTXT = new char[txtSize];
+    	int readPos = 0;
 		for (int i : txtFile) {
 			this->archive.seekg(header_size + i * chunk_size);
-      int readSize = (txtSize > chunk_size) ? chunk_size : txtSize;
-      txtSize -= readSize;
-      this->archive.read(&(bufferTXT[readPos]), readSize);
-      readPos += readSize;
+      		int readSize = (txtSize > chunk_size) ? chunk_size : txtSize;
+      		txtSize -= readSize;
+      		this->archive.read(&(bufferTXT[readPos]), readSize);
+      		readPos += readSize;
 		}
-    std::string tmpTXT(bufferTXT);
-    size_t pos = tmpTXT.find(content);
-    if(pos != std::string::npos) {
-      foundFiles.push_back(txtName);
-    }
-    delete[] bufferTXT;
+    	std::string tmpTXT(bufferTXT);
+    	size_t pos = tmpTXT.find(content);
+    	if(pos != std::string::npos) {
+    		foundFiles.push_back(txtName);
+    	}
+    	delete[] bufferTXT;
 	}
 	//if (!found)std::cout << content << " doesn't exist." << std::endl;
-  if (foundFiles.size() == 0) {
-    std::cout << "no txt file contains [" << content << "]" << std::endl;
-  } else {
-    std::cout << "following files contain [" << content << "]" << std::endl;
-    for (std::string txt : foundFiles) {
-      std::cout << txt << std::endl;
-    }
-  }
+	if (foundFiles.size() == 0) {
+    	std::cout << "no txt file contains [" << content << "]" << std::endl;
+  	} else {
+    	std::cout << "following files contain [" << content << "]" << std::endl;
+    	for (std::string txt : foundFiles) {
+      		std::cout << txt << std::endl;
+    	}
+  	}
 }
 
 void SFArchive::version() {
