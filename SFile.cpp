@@ -46,7 +46,7 @@ void SFile::readArchive(std::fstream &archive, std::vector<int> chunks, std::ofs
     int readSize = (i == numChunks-1) ? remaining : chunk_size;
     archive.seekg(header_size+cur_chunk*chunk_size);
     char* buffer = new char[readSize];
-    std::cout << "readSize: " << readSize << std::endl;
+    //std::cout << "readSize: " << readSize << std::endl;
     archive.read(buffer, readSize);
     file.write(buffer, readSize);
     delete[] buffer;
