@@ -209,19 +209,7 @@ void SFHeader::listFiles(std::string s) {
 
 void SFHeader::listFiles() {
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
-        //std::cout << "type: " << this->blocks[i].type << std::endl;
         if (this->blocks[i].type != AVA) {
-          /*
-          std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].day << " " << this->blocks[i].month << " " << this->blocks[i].year << std::endl;
-          int totalChunks = 0;
-          while (totalChunks < sizeof(this->blocks[i].chunks) / sizeof(short) && this->blocks[i].chunks[totalChunks] != -1) {
-            totalChunks++;
-          }
-          for (int j = 0; j < totalChunks; j++) {
-            std::cout << "chunks num : " << this->blocks[i].chunks[j] << " ";
-          }
-          std::cout << std::endl;
-            */
             std::cout << this->blocks[i].name << " " << this->blocks[i].size <<"byte " << this->blocks[i].month << "/" << this->blocks[i].day << "/"  << this->blocks[i].year << std::endl;
 
         }
