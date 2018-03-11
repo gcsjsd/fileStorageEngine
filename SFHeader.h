@@ -19,6 +19,7 @@ public:
 	int getFileSize(std::string aname);
 	bool delFileHeader(std::string filename, std::fstream& archive);
 	std::vector<int> getFile(int atype, std::string aname); // return the chunk number for this file.
+	std::vector<std::string> getFileName();
 	void writeHeader(std::fstream& archive);
 	void readHeader(std::fstream& archive);
 	void update(std::fstream& archive, std::fstream& newarchive, SFHeader& other);

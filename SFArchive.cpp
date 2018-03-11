@@ -70,6 +70,13 @@ SFArchive& SFArchive::add(std::string name) {
   for (int j = 0; j < 100; j++) {
     block.chunks[j] = -1;
   }
+  std::vector<std::string> files = header.getFileName();
+  for (std::string s : files) {
+  	if (s == name) {
+  		std::cout << "INVALID: file " << name << " already exists in the archive " << this->archiveName << std::endl;
+  		return *this;
+  	}
+  }
   int type = header.typeI2S(name);
   block.type = type;
   const char* s = name.c_str();
@@ -102,6 +109,7 @@ SFArchive& SFArchive::add(std::string name) {
   std::vector<int> chunks = header.addFileHeader(block, this->archive);
   file.seekg(0);
   SFile::writeArchive(this->archive, chunks, file, size);
+  std::cout << "add file to archive done" << std::endl;
 
   return *this;
 }

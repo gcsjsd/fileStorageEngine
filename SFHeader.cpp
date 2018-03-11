@@ -118,7 +118,17 @@ std::vector<int> SFHeader::getFile(std::string aname) {
     return {};
 }
 
-
+std::vector<std::string> SFHeader::getFileName() {
+  std::vector<std::string> res;
+  for (int i = 0; i < sizeof(blocks) / sizeof(block_i); i++) {
+    int type = this->blocks[i].type;
+    std::string name(this->blocks[i].name);
+    if (type != AVA) {
+      res.push_back(name);
+    }
+  }
+  return res;
+}
 int SFHeader::getFileSize(std::string aname) {
     for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
         int type = this->blocks[i].type;
