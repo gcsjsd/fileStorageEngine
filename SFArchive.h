@@ -43,13 +43,16 @@ public:
     
     static void info() {
         std::cout<<"Usage: ./sfarchiver <command>"<<std::endl<<std::endl;
-        std::cout<<"./sfarchiver add typename filename   "<<"add a txt, pic or bin file"<<std::endl;
-        std::cout<<"./sfarchiver del typename filename   "<<"delete a file"<<std::endl;
-        std::cout<<"./sfarchiver -l (filename)           "<<"list files (matching given name)"<<std::endl;
-        std::cout<<"./sfarchiver del typename filename   "<<"delete a file"<<std::endl;
-        std::cout<<"./sfarchiver extract filename        "<<"extract a file"<<std::endl;
-        std::cout<<"./sfarchiver find content            "<<"search txt files matching the given content"<<std::endl;
-        std::cout<<"./sfarchiver -v                      "<<"show the version of this app"<<std::endl;
+        std::cout<<"./sfarchiver add archiveName filename     "<<"   add a txt, pic or bin file to archive"<<std::endl;
+        std::cout<<"./sfarchiver del archiveName filename     "<<"   delete a file in archive"<<std::endl;
+        std::cout<<"./sfarchiver -l archiveName               "<<"   list files in archive"<<std::endl;
+        std::cout<<"./sfarchiver -l archiveName  fileString   "<<"   list files in archive with fileString in filename"<<std::endl;
+        std::cout<<"./sfarchiver list archiveName             "<<"   list files in archive"<<std::endl;
+        std::cout<<"./sfarchiver list archiveName  fileString "<<"   list files in archive with fileString in filename"<<std::endl;
+        std::cout<<"./sfarchiver del archive filename         "<<"   delete a file in archive"<<std::endl;
+        std::cout<<"./sfarchiver extract archiveName filename "<<"   extract a file from archive"<<std::endl;
+        std::cout<<"./sfarchiver find archiveName content     "<<"   search txt files matching the given content in archive "<<std::endl;
+        std::cout<<"./sfarchiver -v                           "<<"   show the version of this app"<<std::endl;
     }
 
     void initHeader(std::ofstream &file); // fulfill the header.

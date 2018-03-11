@@ -255,7 +255,7 @@ void SFArchive::search(std::string content) {
 }
 
 void SFArchive::version() {
-    std::cout<<"SFArchive version "<<1.0<<__DATE__<<std::endl;
+    std::cout<<"SFArchive version "<<"1.0 "<<"Mar 05 2018"<<std::endl;
 }
 
 void SFArchive::error() {
