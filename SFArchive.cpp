@@ -102,7 +102,7 @@ SFArchive& SFArchive::add(std::string name) {
   std::vector<int> chunks = header.addFileHeader(block, this->archive);
   file.seekg(0);
   SFile::writeArchive(this->archive, chunks, file, size);
-  std::cout << "add file done" << std::endl;
+
   return *this;
 }
 
@@ -203,28 +203,47 @@ void SFArchive::search(std::string content) {
 	 *3.found->call Header.list()
      */
 	SFHeader header;
-	bool found = false;
+	//bool found = false;
 	header.readHeader(this->archive);
 	std::vector<std::string> TXTFiles;
 	TXTFiles = header.find_txt_Files();
+  std::vector<std::string> foundFiles;
 	for (std::string txtName : TXTFiles) {
-		std::vector<int>txtFile;
-		txtFile = header.getFile(txtName);
+    //std::cout << "searching in " << txtName << std::endl;
+		std::vector<int> txtFile = header.getFile(txtName);
+    int txtSize = header.getFileSize(txtName);
+    char* bufferTXT = new char[txtSize];
+    int readPos = 0;
 		for (int i : txtFile) {
-			archive.seekg(0);
-			archive.seekg(header_size + i * chunk_size);
-			std::istreambuf_iterator<char>begin(archive);
-			archive.seekg(header_size + i * chunk_size+chunk_size);
-			std::istreambuf_iterator<char>end(archive);
-			std::string txt(begin, end);
+			this->archive.seekg(header_size + i * chunk_size);
+      int readSize = (txtSize > chunk_size) ? chunk_size : txtSize;
+      txtSize -= readSize;
+      this->archive.read(&(bufferTXT[readPos]), readSize);
+      readPos += readSize;
+      /*
 			if (txt.find(content) != std::string::npos) {
 				header.listFiles(txtName);
 				found = true;
 				break;
 			}
+       */
 		}
+    std::string tmpTXT(bufferTXT);
+    size_t pos = tmpTXT.find(content);
+    if(pos != std::string::npos) {
+      foundFiles.push_back(txtName);
+    }
+    delete[] bufferTXT;
 	}
-	if (!found)std::cout << content << " doesn't exist." << std::endl;
+	//if (!found)std::cout << content << " doesn't exist." << std::endl;
+  if (foundFiles.size() == 0) {
+    std::cout << "no txt file contains [" << content << "]" << std::endl;
+  } else {
+    std::cout << "following files contain [" << content << "]" << std::endl;
+    for (std::string txt : foundFiles) {
+      std::cout << txt << std::endl;
+    }
+  }
 }
 
 void SFArchive::version() {
