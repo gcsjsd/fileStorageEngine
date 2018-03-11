@@ -21,7 +21,7 @@ public:
 	std::vector<int> getFile(int atype, std::string aname); // return the chunk number for this file.
 	void writeHeader(std::fstream& archive);
 	void readHeader(std::fstream& archive);
-	void update(std::fstream& archive, std::fstream& newarchive);
+	void update(std::fstream& archive, std::fstream& newarchive, SFHeader& other);
 	void listFiles(std::string s);
 	void listFiles();
   	void printHeader();
@@ -29,6 +29,8 @@ public:
 	std::string typeS2I(int atype);
 
 	std::vector<std::string> find_txt_Files();
+
+        block_i& getBlock(int i);
 };
 
 #endif

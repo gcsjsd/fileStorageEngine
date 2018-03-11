@@ -55,7 +55,7 @@ void SFile::readArchive(std::fstream &archive, std::vector<int> chunks, std::ofs
   file.close();
 }
 //TODO
-void SFile::writeWholeArchive(std::fstream& oldArchive, std::ofstream& newArchive, std::vector<block_i> oldBlocks, std::vector<block_i> newBlocks, std::unordered_map<int,int> newOldBlockMap) {
+void SFile::writeWholeArchive(std::fstream& oldArchive, std::fstream& newArchive, std::vector<block_i>& oldBlocks, std::vector<block_i>& newBlocks, std::unordered_map<int,int>& newOldBlockMap) {
     for (int newIdx = 0; newIdx < newBlocks.size(); newIdx++) {
         if (newOldBlockMap.find(newIdx) != newOldBlockMap.end()) {
 
@@ -76,7 +76,16 @@ void SFile::writeWholeArchive(std::fstream& oldArchive, std::ofstream& newArchiv
                 oldArchive.read(buffer, readSize);
                 newArchive.seekp(newPos);
                 newArchive.write(buffer, readSize);
-                delete[] buffer;
+                delete[] buffer;            
+                if (readSize != chunk_size) {
+                  int fillSize = chunk_size - readSize;
+              	  char* buffer2 = new char[fillSize];
+                  for (int k = 0; k < fillSize; k++) {
+                    buffer2[k] = '\0';
+                  }
+    	          newArchive.write(buffer2, fillSize);
+               	  delete[] buffer2;
+                }
                 remaining -= readSize;
             }
         }

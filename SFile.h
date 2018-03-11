@@ -14,7 +14,7 @@ public:
 	~SFile();
 	static void writeArchive(std::fstream& archive, std::vector<int> chunks, std::ifstream& file, int size);
 	static void readArchive(std::fstream& archive, std::vector<int> chunks, std::ofstream& file, int size);
-	static void writeWholeArchive(std::fstream& oldArchive, std::ofstream& newArchive, std::vector<block_i> oldBlocks, std::vector<block_i> newBlocks, std::unordered_map<int,int> newOldBlockMap);
+	static void writeWholeArchive(std::fstream& oldArchive, std::fstream& newArchive, std::vector<block_i>& oldBlocks, std::vector<block_i>& newBlocks, std::unordered_map<int,int>& newOldBlockMap);
 };
 
 #endif

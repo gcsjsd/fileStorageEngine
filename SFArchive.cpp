@@ -109,27 +109,29 @@ SFArchive& SFArchive::del(std::string name) {
    bool needDel = header.delFileHeader(name, this->archive);
    if (needDel) {
      std::string newName = this->archiveName + ".temp";
-     fstream newStream.open(newName, std::ios::out | std::ios::app);
-     header.update(this->archive, newStream);
+     std::ofstream initStream;
+     initStream.open(newName, std::ios::out | std::ios::app);
+     initHeader(initStream);
+     initStream.close();
+     std::fstream newStream;
+     newStream.open(newName, std::ios::out|std::ios::binary|std::ios::in);
+     SFHeader newHeader;
+     newHeader.readHeader(newStream);
+     header.update(this->archive, newStream, newHeader);
      this->archive.close();
      newStream.close();
 
-     if(remove(archivename.c_str()) != 0 )
-       perror( "Error deleting file" );
-     else
-       puts( "File successfully deleted" );
+     if(remove(archiveName.c_str()) != 0 )
+       perror( "Error deleting file\n" );
 
      int ret;
-     char* oldname = newName.c_str();
-     char* newname = this->archivename.c_str();
+     const char* oldname = newName.c_str();
+     const char* newname = this->archiveName.c_str();
 
      ret = rename(oldname, newname);
 
-     if(ret == 0) {
-        printf("File renamed successfully");
-     } else {
-      printf("Error: unable to rename the file");
-     }
+     if(ret != 0)
+      printf("Error: unable to rename the file\n");
 
    }
    return *this;

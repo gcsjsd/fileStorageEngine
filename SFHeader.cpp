@@ -140,49 +140,42 @@ void SFHeader::writeHeader(std::fstream& archive) {
     archive.write((char*)&(this->blocks), header_size);
 }
 
-void SFHeader::update(std::fstream& archive, std::fstream& newarchive) {
-      std::vector<block_i> newBlocks;
-      for (int i = 0; i < maxFileNumber; i++) {
-          newBlocks[i].type = AVA;
-          for (int j = 0; j < name_size; j++) {
-              newBlocks[i].name[j] = 'x';
-          }
-          newBlocks[i].size = 0;
-          for (int k = 0; k < 20; k++) {
-            newBlocks[i].chunks[k] = -1;
-          }
-      }
+void SFHeader::update(std::fstream& archive, std::fstream& newarchive, SFHeader& other) {
       int newPtr = 0;
       int chunkPtr = 0;
       std::unordered_map<int, int> newOldBlockMap;
       for (int i = 0; i < sizeof(blocks)/sizeof(block_i); i++) {
           if (this->blocks[i].type != AVA) {
+              block_i& b = other.getBlock(newPtr);
               int totalChunks = 0;
               while (totalChunks < sizeof(this->blocks[i].chunks) / sizeof(short) && this->blocks[i].chunks[totalChunks] != -1) {
                   totalChunks++;
               }
               for (int j = 0; j < totalChunks; j++) {
-                  newBlocks[newPtr].chunks[j] = (chunkPtr);
+                  b.chunks[j] = (chunkPtr);
                   chunkPtr++;
               }
-              newBlocks[newPtr].type = this->blocks[i].type;
+              b.type = this->blocks[i].type;
               for (int j = 0; j < name_size; j++) {
-                  newBlocks[newPtr].name[j] = this->blocks[i].name[j];
+                  b.name[j] = this->blocks[i].name[j];
               }
-              newBlocks[newPtr].day = this->blocks[i].day;
-              newBlocks[newPtr].month = this->blocks[i].month;
-              newBlocks[newPtr].year = this->blocks[i].year;
+              b.day = this->blocks[i].day;
+              b.month = this->blocks[i].month;
+              b.year = this->blocks[i].year;
               newOldBlockMap[newPtr] = i;
-              newBlocks[newPtr].size = this->blocks[i].size;
-              newBlocks[newPtr].type = this->blocks[i].type;
+              b.size = this->blocks[i].size;
+              b.type = this->blocks[i].type;
               newPtr++;
           }
       }
-      /* 0.create new archive, write header to new archive.
-       *
-       * 1.write content to new archive by calling SFile.writeWholeArchive()
-       * 2.delete old archive, rename new archive to archive.bin.
-       */
+      std::vector<block_i> oldChunks;
+      std::vector<block_i> newChunks;
+      for (int i = 0; i < sizeof(blocks) / sizeof(block_i); i++) {
+        oldChunks.push_back(getBlock(i));
+        newChunks.push_back(other.getBlock(i));
+      }
+      other.writeHeader(newarchive);
+      SFile::writeWholeArchive(archive, newarchive, oldChunks, newChunks, newOldBlockMap);
 }
 
 
@@ -273,4 +266,8 @@ std::vector<std::string> SFHeader::find_txt_Files() {
 			}
 		}			
 	return res;
+}
+
+block_i& SFHeader::getBlock(int i) {
+  return blocks[i];
 }
