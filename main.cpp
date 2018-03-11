@@ -4,43 +4,58 @@
 #include "SFArchive.h"
 
 int main(int argc, char *argv[]) {
-    SFArchive instance("pictures");
-    //std::cout << command << std::endl;
    if(argc<=1){
-        instance.info();
+        SFArchive::info();
     }else{
-        
-    std::string command(argv[1]);
-    if(command=="add"){
-        std::string type(argv[2]);
-        std::string file(argv[3]);
-        instance.add(type, file);
-    }else if(command=="del"){
-        std::string type(argv[2]);
-        std::string file(argv[3]);
 
-        instance.del(type, file);
-    }else if(command=="-l"||command=="list"){
-        if(argc==3){
-            //std::cout << "list0" << std::endl;
-            std::string content(argv[2]);
-            instance.list(content);
+        std::string command(argv[1]);
+
+        if(command=="add"){
+
+            std::string archiveName(argv[2]);
+            std::string fileName(argv[3]);
+
+            SFArchive instance(archiveName);
+            instance.add(fileName);
+        }else if(command=="del"){
+
+            std::string archiveName(argv[2]);
+            std::string fileName(argv[3]);
+
+            SFArchive instance(archiveName);
+            instance.del(fileName);
+        }else if(command=="-l"||command=="list"){
+            if(argc==4){
+                //std::cout << "list0" << std::endl;
+                std::string archiveName(argv[2]);
+                std::string fileName(argv[3]);
+
+                SFArchive instance(archiveName);
+                instance.list(fileName);
+            }else{
+                std::string archiveName(argv[2]);
+
+                SFArchive instance(archiveName);
+                instance.list();
+            }
+        }else if(command=="extract"){
+                std::string archiveName(argv[2]);
+                std::string fileName(argv[3]);
+
+                SFArchive instance(archiveName);
+                instance.extract(fileName);
+        }else if(command=="find"){
+                std::string archiveName(argv[2]);
+                std::string content(argv[3]);
+
+                SFArchive instance(archiveName);
+                instance.search(content);
+
+        }else if(command=="-v"){
+            instance.version();
         }else{
-            //std::cout << "list1" << std::endl;
-            instance.list();
+            instance.error();
         }
-    }else if(command=="extract"){
-        std::string content(argv[2]);
-        std::string name(argv[3]);
-        instance.extract(content, name);
-    }else if(command=="find"){
-        std::string content(argv[2]);
-        instance.search(content);
-    }else if(command=="-v"){
-        instance.version();
-    }else{
-        instance.error();
-    }
     return 0;
 	}
 }

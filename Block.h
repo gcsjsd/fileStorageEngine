@@ -6,9 +6,7 @@
 #define FILESTORAGE_BLOCK_H
 #define AVA 0
 #define TXT 1
-#define BIN 2
-#define PIC 3
-#define DEL 4
+#define OTH 2
 
 #define chunk_size 5120
 #define block_size 252 // the block in the header

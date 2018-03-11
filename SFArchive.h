@@ -40,13 +40,44 @@ public:
     //the metadata for a file in the header
 
     void error(); // :: show error type (invalid arg, insufficient arg)
-    void info(); // :: show the information
+    
+    static void info() {
+        std::cout<<"Usage: ./sfarchiver <command>"<<std::endl<<std::endl;
+        std::cout<<"./sfarchiver add typename filename   "<<"add a txt, pic or bin file"<<std::endl;
+        std::cout<<"./sfarchiver del typename filename   "<<"delete a file"<<std::endl;
+        std::cout<<"./sfarchiver -l (filename)           "<<"list files (matching given name)"<<std::endl;
+        std::cout<<"./sfarchiver del typename filename   "<<"delete a file"<<std::endl;
+        std::cout<<"./sfarchiver extract filename        "<<"extract a file"<<std::endl;
+        std::cout<<"./sfarchiver find content            "<<"search txt files matching the given content"<<std::endl;
+        std::cout<<"./sfarchiver -v                      "<<"show the version of this app"<<std::endl;
+    }
 
     void initHeader(std::ofstream &file); // fulfill the header.
     //block_i* readerHeader(); // read all the header into the struct
     //void updateHeader(block_i* blocks); // update the header,
 
 };
-
-
+/*
+class information {
+private: 
+    void info(){
+        std::cout<<"Usage: ./sfarchiver <command>"<<std::endl<<std::endl;
+        std::cout<<"./sfarchiver add typename filename   "<<"add a txt, pic or bin file"<<std::endl;
+        std::cout<<"./sfarchiver del typename filename   "<<"delete a file"<<std::endl;
+        std::cout<<"./sfarchiver -l (filename)           "<<"list files (matching given name)"<<std::endl;
+        std::cout<<"./sfarchiver del typename filename   "<<"delete a file"<<std::endl;
+        std::cout<<"./sfarchiver extract filename        "<<"extract a file"<<std::endl;
+        std::cout<<"./sfarchiver find content            "<<"search txt files matching the given content"<<std::endl;
+        std::cout<<"./sfarchiver -v                      "<<"show the version of this app"<<std::endl;
+        return;
+    }
+public:
+    information();
+    ~information();
+    void giveInfo(){
+        info();
+        return;
+    }
+};
+*/
 #endif //FILESTORAGE_FILE_H

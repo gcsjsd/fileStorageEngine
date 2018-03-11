@@ -230,11 +230,11 @@ void SFHeader::listFiles() {
     return;
 }
 
-int SFHeader::typeI2S(std::string type){
+int SFHeader::typeI2S(std::string fileName){
+    std::size_t pos = fileName.find(".");
+    std::string type = fileName.substr(pos+1,3);
     if(type=="txt") return TXT;
-    else if(type=="pic") return PIC;
-    else if(type=="bin") return BIN;
-    else return -1;
+    else return OTH;
 }
 
 std::string SFHeader::typeS2I(int atype){
